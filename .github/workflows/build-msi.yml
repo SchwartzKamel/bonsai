@@ -1,0 +1,40 @@
+name: Build MSI
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'installer/**'
+      - 'src/**'
+
+jobs:
+  build-msi:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Install WiX
+        run: choco install wixtoolset --no-progress
+
+      - name: Restore & Build
+        run: |
+          dotnet restore
+          dotnet build -c Release
+
+      - name: Publish Win self-contained
+        run: |
+          dotnet publish src/Bonsai.UI -c Release -f net10.0 -r win-x64 --self-contained true \
+            -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -o ./publish/win-x64
+
+      - name: Build MSI (WiX)
+        run: pwsh -c "./scripts/build-msi.ps1 -BinariesDir ./publish/win-x64 -OutputDir ./artifacts"
+
+      - name: Upload MSI
+        uses: actions/upload-artifact@v4
+        with:
+          name: bonsai-windows-msi
+          path: artifacts/*.msi

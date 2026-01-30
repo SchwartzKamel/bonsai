@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!-- Centralize publish settings to help CI change them in one place -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+</Project>

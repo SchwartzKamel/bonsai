@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.*" />
+    <PackageReference Include="Avalonia.Headless" Version="11.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Bonsai.Core\Bonsai.Core.csproj" />
+    <ProjectReference Include="..\..\src\Bonsai.Services\Bonsai.Services.csproj" />
+    <ProjectReference Include="..\..\src\Bonsai.UI\Bonsai.UI.csproj" />
+  </ItemGroup>
+</Project>

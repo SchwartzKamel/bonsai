@@ -1,0 +1,47 @@
+# .gitignore for .NET + Avalonia projects
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.userprefs
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build outputs
+bin/
+obj/
+publish/
+artifacts/
+
+# NuGet
+*.nupkg
+packages/
+.nuget/packages/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+
+# dotnet tools
+.dotnet/
+
+# Secrets
+secrets.json
+
+# CI
+.github/workflows/**/tmp
+
+# generated files
+**/*.dotnet* 
+
+# IDE specific caches
+*.ide

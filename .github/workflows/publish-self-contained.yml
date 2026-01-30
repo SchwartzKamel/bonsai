@@ -1,0 +1,90 @@
+name: Publish Self-Contained
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-package:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            pack: linux
+          - os: windows-latest
+            rid: win-x64
+            pack: windows
+          - os: macos-latest
+            rid: osx-x64
+            pack: macos
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Install platform deps (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libx11-6
+          # Optionally install appimagetool if packaging AppImage
+          sudo apt-get install -y --no-install-recommends appimagetool || true
+
+      - name: Install WiX (Windows)
+        if: runner.os == 'Windows'
+        run: choco install wixtoolset --no-progress
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Test (headless)
+        env:
+          AVALONIA_HEADLESS: '1'
+        run: dotnet test -c Release --no-build
+
+      - name: Publish self-contained
+        run: |
+          dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true \
+            -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -o ./publish/${{ matrix.rid }}
+
+      - name: Package (platform-specific)
+        run: |
+          if [ "${{ matrix.pack }}" = "linux" ]; then
+            chmod +x scripts/pack-appimage.sh && scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
+          elif [ "${{ matrix.pack }}" = "macos" ]; then
+            chmod +x scripts/make-dmg.sh && scripts/make-dmg.sh ./publish/${{ matrix.rid }} ./artifacts
+          else
+            pwsh -c "./scripts/build-msi.ps1 -BinariesDir ./publish/${{ matrix.rid }} -OutputDir ./artifacts"
+          fi
+        shell: bash
+
+      - name: Zip published binaries
+        run: |
+          mkdir -p ./artifacts/binzip
+          cd publish/${{ matrix.rid }} && zip -r "../../artifacts/binzip/bonsai-${{ matrix.rid }}-${{ github.run_id }}.zip" .
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bonsai-${{ matrix.rid }}
+          path: |
+            artifacts/**
+            publish/${{ matrix.rid }}
+
+      - name: Cleanup temporary files
+        run: rm -rf AppDir

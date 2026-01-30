@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<linker>
+  <!-- Preserve types used via reflection from Avalonia XAML to avoid trimming removing needed members -->
+  <assembly fullname="Avalonia.Markup.Xaml">
+    <type fullname="Avalonia.Markup.Xaml.MarkupExtensions.ReflectionBindingExtension" preserve="all" />
+  </assembly>
+
+  <!-- Preserve our viewmodels and any members accessed by XAML/UI reflection -->
+  <assembly fullname="Bonsai.UI">
+    <type fullname="Bonsai.UI.MainWindowViewModel" preserve="all" />
+  </assembly>
+</linker>

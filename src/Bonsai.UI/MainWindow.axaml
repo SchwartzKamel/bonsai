@@ -1,0 +1,10 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Bonsai.UI.ViewModels;assembly=Bonsai.UI"
+        x:Class="Bonsai.UI.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Bonsai">
+  <StackPanel Margin="16">
+    <TextBlock x:Name="MessageTextBlock" Text="" />
+  </StackPanel>
+</Window> 

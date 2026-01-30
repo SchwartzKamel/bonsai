@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+
+    <!-- CI-friendly defaults; can be overridden in CI pipelines -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
+    <SelfContained>false</SelfContained>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <!-- Trimmer descriptor to preserve types/members used via XAML reflection -->
+    <TrimmerRootDescriptor>TrimmerDescriptor.xml</TrimmerRootDescriptor>
+
+    <!-- Enable Avalonia XAML IL (compile-time XAML and compiled bindings) -->
+    <UseAvaloniaXamlIl>true</UseAvaloniaXamlIl>
+    <AvaloniaXamlIlEnableCompiledBindings>true</AvaloniaXamlIlEnableCompiledBindings>
+    <!-- Alternative flags used by different Avalonia versions; set both for compatibility -->
+    <AvaloniaUseXamlIl>true</AvaloniaUseXamlIl>
+    <AvaloniaUseCompiledBindings>true</AvaloniaUseCompiledBindings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bonsai.Core\Bonsai.Core.csproj" />
+    <ProjectReference Include="..\Bonsai.Services\Bonsai.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="TrimmerDescriptor.xml" />
+  </ItemGroup>
+</Project>
