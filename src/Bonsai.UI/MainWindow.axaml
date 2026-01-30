@@ -4,7 +4,12 @@
         x:Class="Bonsai.UI.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Bonsai">
-  <StackPanel Margin="16">
+  <StackPanel Margin="16" Spacing="8">
+    <TextBlock x:Name="TitleTextBlock" FontWeight="Bold" FontSize="16" Text="" />
     <TextBlock x:Name="MessageTextBlock" Text="" />
+    <StackPanel Orientation="Horizontal" Spacing="8">
+      <Button x:Name="RefreshButton" Content="Refresh" />
+      <TextBlock x:Name="LastUpdatedTextBlock" Text="" VerticalAlignment="Center" />
+    </StackPanel>
   </StackPanel>
 </Window> 

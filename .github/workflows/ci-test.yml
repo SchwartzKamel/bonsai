@@ -1,0 +1,116 @@
+name: CI Test
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: nuget-${{ runner.os }}-
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Install Linux prerequisites
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libx11-6 xvfb
+
+      - name: Start Xvfb (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          Xvfb :99 -screen 0 1280x1024x24 &
+          sleep 2
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+
+      - name: Restore and Build
+        run: |
+          dotnet restore
+          dotnet build -c Release --no-restore
+
+      - name: Run tests (non-Windows)
+        if: runner.os != 'Windows'
+        env:
+          AVALONIA_HEADLESS: '1'
+        run: |
+          dotnet test --logger "trx;LogFileName=TestResults.trx" --results-directory ./test-results -c Release --no-build
+
+      - name: Run tests (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          dotnet test --logger "trx;LogFileName=TestResults.trx" --results-directory ./test-results -c Release --no-build
+
+      - name: Convert TRX to JUnit (non-Windows)
+        if: runner.os != 'Windows'
+        run: |
+          dotnet tool install -g trx2junit
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+          mkdir -p ./test-results/junit
+          for f in ./test-results/*.trx; do
+            if [ -f "$f" ]; then
+              trx2junit "$f" -o "./test-results/junit/$(basename "$f" .trx).xml"
+            fi
+          done
+
+      - name: Convert TRX to JUnit (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          dotnet tool install -g trx2junit
+          $envPath = Join-Path $HOME ".dotnet/tools"
+          Add-Content -Path $env:GITHUB_PATH -Value $envPath
+          New-Item -Path .\test-results\junit -ItemType Directory -Force
+          Get-ChildItem -Path .\test-results -Filter *.trx | ForEach-Object {
+            trx2junit $_.FullName -o (Join-Path .\test-results\junit ($_.BaseName + '.xml'))
+          }
+
+      - name: Publish test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: dotnet-test
+          path: ./test-results/*.trx
+          reporter: dotnet-trx
+          github_token: ${{ secrets.GH_PUSH }}
+
+      - name: Upload JUnit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-test-junit-${{ matrix.os }}
+          path: ./test-results/junit/**
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-test-results-${{ matrix.os }}
+          path: ./test-results/**
+
+      - name: Upload logs (optional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-test-logs-${{ matrix.os }}
+          path: ./logs/**
