@@ -133,8 +133,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PUSH }}
+          token: ${{ secrets.GH_PUSH }}
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
@@ -143,5 +142,4 @@ jobs:
             release-artifacts/linux/**
             release-artifacts/mac/**
             release-artifacts/windows/**
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PUSH }}
+          token: ${{ secrets.GH_PUSH }}

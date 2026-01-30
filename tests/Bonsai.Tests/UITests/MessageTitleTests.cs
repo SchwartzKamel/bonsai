@@ -15,7 +15,7 @@ namespace Bonsai.Tests.UITests
 
     public class MessageTitleTests
     {
-        [StaFact]
+        [Fact]
         public async Task MessageUpdateReflectsInUI()
         {
             var svc = new FakeDateTimeService3 { UtcNow = System.DateTime.UtcNow };
@@ -25,6 +25,7 @@ namespace Bonsai.Tests.UITests
             await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
 
             var msgBlock = window.FindControl<TextBlock>("MessageTextBlock");
+            Assert.NotNull(msgBlock);
             Assert.Equal(vm.Message, msgBlock.Text);
 
             // Change message and ensure it propagates
@@ -40,7 +41,7 @@ namespace Bonsai.Tests.UITests
             Assert.Equal("Hello again", msgBlock.Text);
         }
 
-        [StaFact]
+        [Fact]
         public async Task TitleUpdateReflectsInUI()
         {
             var svc = new FakeDateTimeService3 { UtcNow = System.DateTime.UtcNow };
@@ -50,6 +51,7 @@ namespace Bonsai.Tests.UITests
             await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
 
             var titleBlock = window.FindControl<TextBlock>("TitleTextBlock");
+            Assert.NotNull(titleBlock);
             Assert.Equal(vm.Title, titleBlock.Text);
 
             vm.Title = "NewTitle";

@@ -8,7 +8,8 @@ public class HelloWorldTest
     [Fact]
     public void ViewModelHasDefaultMessage()
     {
-        var vm = new MainWindowViewModel();
+        // pass a placeholder dateTimeService (null-forgiving) to satisfy the constructor dependency in tests
+        var vm = new MainWindowViewModel(null!);
         Assert.Equal("Hello Bonsai!", vm.Message);
     }
 }

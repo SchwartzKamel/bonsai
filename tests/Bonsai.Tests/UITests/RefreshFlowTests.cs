@@ -17,7 +17,7 @@ namespace Bonsai.Tests.UITests
 
     public class RefreshFlowTests
     {
-        [StaFact]
+        [Fact]
         public async Task RefreshButtonUpdatesLastUpdatedText()
         {
             // Arrange: set deterministic times
@@ -35,8 +35,8 @@ namespace Bonsai.Tests.UITests
             await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
 
             // Find controls
-            var refreshBtn = window.FindControl<Button>("RefreshButton");
-            var lastUpdated = window.FindControl<TextBlock>("LastUpdatedTextBlock");
+            var refreshBtn = window.FindControl<Button>("RefreshButton") ?? throw new InvalidOperationException("RefreshButton not found");
+            var lastUpdated = window.FindControl<TextBlock>("LastUpdatedTextBlock") ?? throw new InvalidOperationException("LastUpdatedTextBlock not found");
 
             // Initial LastUpdated set by ctor
             Assert.Equal(fake.UtcNow.ToString("u"), vm.LastUpdated);

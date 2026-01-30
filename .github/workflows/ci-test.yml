@@ -92,7 +92,7 @@ jobs:
           name: dotnet-test
           path: ./test-results/*.trx
           reporter: dotnet-trx
-          github_token: ${{ secrets.GH_PUSH }}
+          token: ${{ secrets.GH_PUSH }}
 
       - name: Upload JUnit results
         if: always()
