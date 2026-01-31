@@ -19,9 +19,13 @@ jobs:
       - name: Install WiX Toolset v4
         shell: pwsh
         run: |
-          choco install wixtoolset.v4 --yes --force
-          echo "C:\tools\wix\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
+          $wixVersion = "4.0.4"
+          $wixUrl = "https://github.com/wixtoolset/wix/releases/download/v${wixVersion}/wix-v${wixVersion}-x86.msi"
+          $wixMsiPath = "wix-v${wixVersion}-x86.msi"
+          Invoke-WebRequest -Uri $wixUrl -OutFile $wixMsiPath
+          Start-Process msiexec.exe -ArgumentList "/i $wixMsiPath /quiet /norestart" -Wait -NoNewWindow
+          $wixBinPath = "C:\Program Files (x86)\WiX Toolset v4\bin"
+          echo "$wixBinPath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Restore & Build
         run: |
           dotnet restore
