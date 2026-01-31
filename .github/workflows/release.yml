@@ -49,7 +49,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $url = "https://github.com/wixtoolset/wix/releases/download/wixv4-stable/wix4004-x64.msi"
+          $url = "https://github.com/wixtoolset/wix/releases/download/wix-v4.0.4/wix4004-x64.msi"
           Invoke-WebRequest -Uri $url -OutFile "wix.msi"
           Start-Process msiexec.exe -ArgumentList "/i wix.msi /quiet /norestart ADDLOCAL=Tools" -Wait
           Remove-Item "wix.msi" -Force
