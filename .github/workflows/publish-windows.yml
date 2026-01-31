@@ -1,0 +1,78 @@
+name: Publish Windows Self-Contained
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Install WiX Toolset v4
+        shell: pwsh
+        run: |
+          choco install wixtoolset.v4 --yes --force
+          echo "C:\tools\wix\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Test (headless)
+        env:
+          AVALONIA_HEADLESS: '1'
+        run: dotnet test -c Release --no-build
+
+      - name: Publish self-contained (Windows)
+        shell: pwsh
+        run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/win-x64
+
+      - name: Check packaging dependencies
+        run: make check-packaging-deps
+
+      - name: Print packaging tool versions (best effort)
+        shell: bash
+        run: |
+          echo "dotnet:" && dotnet --info
+          if command -v pwsh >/dev/null 2>&1; then echo "pwsh:" && pwsh --version; else echo "pwsh: not available"; fi
+          if command -v appimagetool >/dev/null 2>&1; then echo "appimagetool:" && appimagetool --version; else echo "appimagetool: not available"; fi
+          if command -v hdiutil >/dev/null 2>&1; then echo "hdiutil: available (version N/A)"; else echo "hdiutil: not available"; fi
+
+      - name: Package (Windows MSI)
+        shell: pwsh
+        run: |
+          ./scripts/build-msi.ps1 -BinariesDir ./publish/win-x64 -OutputDir ./artifacts
+
+      - name: Zip published binaries (Windows)
+        shell: pwsh
+        run: |
+          New-Item -Path .\artifacts\binzip -ItemType Directory -Force
+          Compress-Archive -Path "publish/win-x64/*" -DestinationPath "artifacts/binzip/bonsai-win-x64-${{ github.run_id }}.zip" -Force
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bonsai-win-x64
+          path: |
+            artifacts/**
+            publish/win-x64
+
+      - name: Cleanup temporary files (Windows)
+        shell: pwsh
+        run: Remove-Item -Recurse -Force AppDir -ErrorAction SilentlyContinue

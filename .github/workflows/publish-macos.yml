@@ -1,4 +1,4 @@
-name: Publish Self-Contained
+name: Publish macOS Self-Contained
 on:
   push:
     branches: [ main ]
@@ -11,12 +11,6 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            rid: linux-x64
-            pack: linux
-          - os: windows-latest
-            rid: win-x64
-            pack: windows
           - os: macos-latest
             rid: osx-arm64
             pack: macos
@@ -36,20 +30,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-      - name: Install Linux Dependencies
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libx11-6 fuse
-          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
-          chmod +x /usr/local/bin/appimagetool
-
-      - name: Install WiX Toolset v4
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          choco install wixtoolset.v4 --yes --force
-          echo "C:\tools\wix\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Restore
         run: dotnet restore
@@ -63,14 +43,8 @@ jobs:
         run: dotnet test -c Release --no-build
 
       - name: Publish self-contained
-        if: runner.os != 'Windows'
         run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
         shell: bash
-
-      - name: Publish self-contained (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
 
       - name: Check packaging dependencies
         run: make check-packaging-deps
@@ -83,33 +57,18 @@ jobs:
           if command -v hdiutil >/dev/null 2>&1; then echo "hdiutil: available (version N/A)"; else echo "hdiutil: not available"; fi
         shell: bash
 
-
-      - name: Package (platform-specific)
+      - name: Package (macOS DMG)
         env:
           CI: true
         run: |
-          if [ "${{ runner.os }}" == "Linux" ]; then
-            ./scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
-          elif [ "${{ runner.os }}" == "macOS" ]; then
-            chmod +x scripts/make-dmg.sh && scripts/make-dmg.sh ./publish/${{ matrix.rid }} ./artifacts
-          else
-            pwsh -c "./scripts/build-msi.ps1 -BinariesDir ./publish/${{ matrix.rid }} -OutputDir ./artifacts"
-          fi
+          chmod +x scripts/make-dmg.sh && scripts/make-dmg.sh ./publish/${{ matrix.rid }} ./artifacts
         shell: bash
 
       - name: Zip published binaries
-        if: runner.os != 'Windows'
         run: |
           mkdir -p ./artifacts/binzip
           cd publish/${{ matrix.rid }} && zip -r "../../artifacts/binzip/bonsai-${{ matrix.rid }}-${{ github.run_id }}.zip" .
         shell: bash
-
-      - name: Zip published binaries (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          New-Item -Path .\artifacts\binzip -ItemType Directory -Force
-          Compress-Archive -Path "publish/${{ matrix.rid }}/*" -DestinationPath "artifacts/binzip/bonsai-${{ matrix.rid }}-${{ github.run_id }}.zip" -Force
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -119,12 +78,6 @@ jobs:
             artifacts/**
             publish/${{ matrix.rid }}
 
-      - name: Cleanup temporary files (non-Windows)
-        if: runner.os != 'Windows'
+      - name: Cleanup temporary files
         run: rm -rf AppDir
         shell: bash
-
-      - name: Cleanup temporary files (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: Remove-Item -Recurse -Force AppDir -ErrorAction SilentlyContinue

@@ -1,0 +1,81 @@
+name: Publish Linux Self-Contained
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Install Linux Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libx11-6 fuse
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+          chmod +x /usr/local/bin/appimagetool
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Test (headless)
+        env:
+          AVALONIA_HEADLESS: '1'
+        run: dotnet test -c Release --no-build
+
+      - name: Publish self-contained
+        run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/linux-x64
+        shell: bash
+
+      - name: Check packaging dependencies
+        run: make check-packaging-deps
+
+      - name: Print packaging tool versions (best effort)
+        run: |
+          echo "dotnet:" && dotnet --info
+          if command -v pwsh >/dev/null 2>&1; then echo "pwsh:" && pwsh --version; else echo "pwsh: not available"; fi
+          if command -v appimagetool >/dev/null 2>&1; then echo "appimagetool:" && appimagetool --version; else echo "appimagetool: not available"; fi
+          if command -v hdiutil >/dev/null 2>&1; then echo "hdiutil: available (version N/A)"; else echo "hdiutil: not available"; fi
+        shell: bash
+
+      - name: Package (Linux AppImage)
+        env:
+          CI: true
+        run: |
+          ./scripts/pack-appimage.sh ./publish/linux-x64 ./artifacts
+        shell: bash
+
+      - name: Zip published binaries
+        run: |
+          mkdir -p ./artifacts/binzip
+          cd publish/linux-x64 && zip -r "../../artifacts/binzip/bonsai-linux-x64-${{ github.run_id }}.zip" .
+        shell: bash
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bonsai-linux-x64
+          path: |
+            artifacts/**
+            publish/linux-x64
+
+      - name: Cleanup temporary files
+        run: rm -rf AppDir
+        shell: bash
