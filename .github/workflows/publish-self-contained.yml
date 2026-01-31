@@ -74,24 +74,11 @@ jobs:
           echo "appimagetool:" && (appimagetool --version 2>/dev/null || true)
           echo "hdiutil:" && (hdiutil --version 2>/dev/null || true)
 
-      - name: Prepare AppDir (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          rm -rf AppDir
-          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/64x64/apps
-          cp publish/linux-x64/Bonsai.UI AppDir/usr/bin/Bonsai
-          chmod +x AppDir/usr/bin/Bonsai
-          cp Bonsai.desktop AppDir/usr/share/applications/
-          cp AppDir-new/usr/share/icons/bonsai.png AppDir/usr/share/icons/hicolor/64x64/apps/
-          cp AppDir/AppRun AppDir/
-        shell: bash
 
       - name: Package (platform-specific)
         run: |
           if [ "${{ matrix.pack }}" = "linux" ]; then
-            # Use appimage-builder for Linux AppImage
-            appimage-builder --recipe appimage-builder.yml
-            mv Bonsai-x86_64.AppImage ./artifacts/Bonsai-linux-x64.AppImage
+            ./scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
           elif [ "${{ matrix.pack }}" = "macos" ]; then
             chmod +x scripts/make-dmg.sh && scripts/make-dmg.sh ./publish/${{ matrix.rid }} ./artifacts
           else

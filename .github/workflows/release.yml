@@ -3,11 +3,6 @@ on:
   push:
     tags:
       - 'v*'
-  workflow_run:
-    workflows:
-      - 'CI Test'
-    types:
-      - completed
 
 jobs:
   build-release:
@@ -64,23 +59,11 @@ jobs:
         run: dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
         shell: bash
 
-      - name: Prepare AppDir (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          rm -rf AppDir
-          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/64x64/apps
-          cp publish/linux-x64/Bonsai.UI AppDir/usr/bin/Bonsai
-          chmod +x AppDir/usr/bin/Bonsai
-          cp Bonsai.desktop AppDir/usr/share/applications/
-          cp AppDir-new/usr/share/icons/bonsai.png AppDir/usr/share/icons/hicolor/64x64/apps/
-          cp AppDir/AppRun AppDir/
-        shell: bash
 
       - name: Package (Linux AppImage)
         if: runner.os == 'Linux'
         run: |
-          appimage-builder --recipe appimage-builder.yml
-          mv Bonsai-x86_64.AppImage ./artifacts/Bonsai-linux-x64.AppImage
+          ./scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
 
       - name: Package (macOS DMG)
         if: runner.os == 'macOS'
