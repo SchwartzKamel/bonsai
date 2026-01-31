@@ -1,10 +1,16 @@
 <Project>
   <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
     <!-- Centralize publish settings to help CI change them in one place -->
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>link</TrimMode>
     <PublishSingleFile>true</PublishSingleFile>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <Version>1.0.0</Version>
+    <!-- Avalonia specific for Desktop -->
+    <UseAvaloniaXamlIl Condition="'$(TargetFramework)' == 'net10.0'" >true</UseAvaloniaXamlIl>
+    <AvaloniaXamlIlEnableCompiledBindings Condition="'$(TargetFramework)' == 'net10.0'" >true</AvaloniaXamlIlEnableCompiledBindings>
+  </PropertyGroup>
   </PropertyGroup>
 </Project>

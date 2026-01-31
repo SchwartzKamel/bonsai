@@ -16,8 +16,11 @@ jobs:
             rid: linux-x64
             asset_name: bonsai-linux
           - os: macos-latest
-            rid: osx-x64
+            rid: osx-arm64
             asset_name: bonsai-mac
+          - os: macos-latest
+            rid: osx-x64
+            asset_name: bonsai-mac-intel
           - os: windows-latest
             rid: win-x64
             asset_name: bonsai-windows
@@ -34,17 +37,17 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.x'
+      - name: Install fuse for AppImage (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y fuse
 
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libx11-6
-          # Install appimage-builder dependencies
-          sudo apt-get install -y fuse
-          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-          chmod +x appimagetool-x86_64.AppImage
-          mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
+          sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libx11-6 fuse
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+          chmod +x /usr/local/bin/appimagetool
 
       - name: Install WiX (Windows)
         if: runner.os == 'Windows'

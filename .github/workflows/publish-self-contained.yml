@@ -18,6 +18,9 @@ jobs:
             rid: win-x64
             pack: windows
           - os: macos-latest
+            rid: osx-arm64
+            pack: macos
+          - os: macos-latest
             rid: osx-x64
             pack: macos
     steps:
@@ -33,6 +36,17 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.x'
+      - name: Install fuse for AppImage (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fuse
+      - name: Download appimagetool (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O appimagetool
+          chmod +x appimagetool
+          sudo mv appimagetool /usr/local/bin/
 
       - name: Install platform deps (Linux)
         if: runner.os == 'Linux'
