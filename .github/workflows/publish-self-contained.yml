@@ -71,7 +71,7 @@ jobs:
           echo "dotnet:" && dotnet --info
           if command -v pwsh >/dev/null 2>&1; then echo "pwsh:" && pwsh --version; else echo "pwsh: not available"; fi
           if command -v appimagetool >/dev/null 2>&1; then echo "appimagetool:" && appimagetool --version; else echo "appimagetool: not available"; fi
-          if command -v hdiutil >/dev/null 2>&1; then echo "hdiutil:" && hdiutil --version; else echo "hdiutil: not available"; fi
+          if command -v hdiutil >/dev/null 2>&1; then echo "hdiutil:" && hdiutil version; else echo "hdiutil: not available"; fi
         shell: bash
 
 
