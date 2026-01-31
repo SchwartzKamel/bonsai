@@ -61,9 +61,8 @@ jobs:
         run: dotnet test -c Release --no-build
 
       - name: Publish self-contained
-        run: |
-          dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true \
-            -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -o ./publish/${{ matrix.rid }}
+        run: dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
+        shell: bash
 
       - name: Check packaging dependencies
         run: make check-packaging-deps
@@ -74,6 +73,18 @@ jobs:
           echo "pwsh:" && (pwsh --version 2>/dev/null || true)
           echo "appimagetool:" && (appimagetool --version 2>/dev/null || true)
           echo "hdiutil:" && (hdiutil --version 2>/dev/null || true)
+
+      - name: Prepare AppDir (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          rm -rf AppDir
+          mkdir -p AppDir/usr/bin AppDir/usr/share/applications AppDir/usr/share/icons/hicolor/64x64/apps
+          cp publish/linux-x64/Bonsai.UI AppDir/usr/bin/Bonsai
+          chmod +x AppDir/usr/bin/Bonsai
+          cp Bonsai.desktop AppDir/usr/share/applications/
+          cp AppDir-new/usr/share/icons/bonsai.png AppDir/usr/share/icons/hicolor/64x64/apps/
+          cp AppDir/AppRun AppDir/
+        shell: bash
 
       - name: Package (platform-specific)
         run: |
