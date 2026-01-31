@@ -1,15 +1,27 @@
+using System;
 using Xunit;
+using Bonsai.Services;
 using Bonsai.UI.ViewModels;
 
 namespace Bonsai.Tests;
 
 public class HelloWorldTest
 {
+    private class FakeDateTimeService : IDateTimeService
+    {
+        public DateTime UtcNow => DateTime.UtcNow;
+    }
+
     [Fact]
     public void ViewModelHasDefaultMessage()
     {
-        // pass a placeholder dateTimeService (null-forgiving) to satisfy the constructor dependency in tests
-        var vm = new MainWindowViewModel(null!);
+        var vm = new MainWindowViewModel(new FakeDateTimeService());
         Assert.Equal("Hello Bonsai!", vm.Message);
+    }
+
+    [Fact]
+    public void ConstructorThrowsOnNullDateTimeService()
+    {
+        Assert.Throws<ArgumentNullException>(() => new MainWindowViewModel(null!));
     }
 }

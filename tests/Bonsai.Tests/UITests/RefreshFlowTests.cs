@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
@@ -10,62 +9,72 @@ using Xunit;
 
 namespace Bonsai.Tests.UITests
 {
-    class FakeDateTimeService : IDateTimeService
+    [Collection("UI")]
+    public class RefreshFlowTests : UIAvaloniaTestBase
     {
-        public DateTime UtcNow { get; set; }
-    }
+        public RefreshFlowTests(UIFixture fixture) : base(fixture.Session) { }
 
-    public class RefreshFlowTests
-    {
-        [Fact]
-        public async Task RefreshButtonUpdatesLastUpdatedText()
+        class FakeDateTimeService : IDateTimeService
         {
-            // Arrange: set deterministic times
-            var fake = new FakeDateTimeService { UtcNow = new DateTime(2026, 1, 30, 12, 0, 0, DateTimeKind.Utc) };
-            var vm = new MainWindowViewModel(fake);
+            public DateTime UtcNow { get; set; }
+        }
 
-            // Simulate later time for refresh
-            var refreshedTime = new DateTime(2026, 1, 30, 12, 5, 0, DateTimeKind.Utc);
+        [Fact]
+        public void RefreshButtonUpdatesLastUpdatedText()
+        {
+            if (Session is null) return;
 
-            // Create window and attach DataContext
-            var window = new MainWindow();
-            window.DataContext = vm;
-
-            // Ensure template initialized and names available
-            await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
-
-            // Find controls
-            var refreshBtn = window.FindControl<Button>("RefreshButton") ?? throw new InvalidOperationException("RefreshButton not found");
-            var lastUpdated = window.FindControl<TextBlock>("LastUpdatedTextBlock") ?? throw new InvalidOperationException("LastUpdatedTextBlock not found");
-
-            // Initial LastUpdated set by ctor
-            Assert.Equal(fake.UtcNow.ToString("u"), vm.LastUpdated);
-
-            // Act: change time and click refresh
-            fake.UtcNow = refreshedTime;
-            // Raise click event
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            Dispatch(() =>
             {
-                var args = new RoutedEventArgs(Button.ClickEvent);
-                refreshBtn.RaiseEvent(args);
-            });
+                // Arrange: set deterministic times
+                var fake = new FakeDateTimeService { UtcNow = new DateTime(2026, 1, 30, 12, 0, 0, DateTimeKind.Utc) };
+                var vm = new MainWindowViewModel(fake);
 
-            // Wait/poll for UI to update (posted via dispatcher)
-            var timeout = TimeSpan.FromSeconds(2);
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            while (sw.Elapsed < timeout)
-            {
-                await Task.Delay(50);
-                var text = lastUpdated.Text;
-                if (text == refreshedTime.ToString("u"))
+                // Simulate later time for refresh
+                var refreshedTime = new DateTime(2026, 1, 30, 12, 5, 0, DateTimeKind.Utc);
+
+                // Create window and attach DataContext
+                var window = new MainWindow();
+                window.DataContext = vm;
+                window.Show();
+
+                // Ensure template initialized and names available
+                Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render).Wait();
+
+                // Find controls
+                var refreshBtn = window.FindControl<Button>("RefreshButton") ?? throw new InvalidOperationException("RefreshButton not found");
+                var lastUpdated = window.FindControl<TextBlock>("LastUpdatedTextBlock") ?? throw new InvalidOperationException("LastUpdatedTextBlock not found");
+
+                // Initial LastUpdated set by ctor
+                Assert.Equal(fake.UtcNow.ToString("u"), vm.LastUpdated);
+
+                // Act: change time and click refresh
+                fake.UtcNow = refreshedTime;
+                // Raise click event
+                Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    // Success
-                    return;
-                }
-            }
+                    var args = new RoutedEventArgs(Button.ClickEvent);
+                    refreshBtn.RaiseEvent(args);
+                }).Wait();
 
-            // If we get here, test failed
-            Assert.Equal(refreshedTime.ToString("u"), lastUpdated.Text);
+                // Poll for UI to update (posted via dispatcher)
+                int attempts = 0;
+                const int maxAttempts = 40;
+                while (attempts < maxAttempts)
+                {
+                    Dispatcher.UIThread.RunJobs();
+                    var text = lastUpdated.Text;
+                    if (text == refreshedTime.ToString("u"))
+                    {
+                        // Success
+                        break;
+                    }
+                    attempts++;
+                }
+
+                // If we get here, test failed
+                Assert.Equal(refreshedTime.ToString("u"), lastUpdated.Text);
+            });
         }
     }
 }

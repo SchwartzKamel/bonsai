@@ -39,8 +39,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-0 libgdk-pixbuf2.0-0 libx11-6
-          # Optionally install appimagetool if packaging AppImage
-          sudo apt-get install -y --no-install-recommends appimagetool || true
+          # Install appimage-builder for AppImage packaging
+          sudo apt-get install -y fuse
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+          mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
 
       - name: Install WiX (Windows)
         if: runner.os == 'Windows'
@@ -65,7 +68,9 @@ jobs:
       - name: Package (platform-specific)
         run: |
           if [ "${{ matrix.pack }}" = "linux" ]; then
-            chmod +x scripts/pack-appimage.sh && scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
+            # Use appimage-builder for Linux AppImage
+            appimage-builder --recipe appimage-builder.yml
+            mv Bonsai-x86_64.AppImage ./artifacts/Bonsai-linux-x64.AppImage
           elif [ "${{ matrix.pack }}" = "macos" ]; then
             chmod +x scripts/make-dmg.sh && scripts/make-dmg.sh ./publish/${{ matrix.rid }} ./artifacts
           else

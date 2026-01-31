@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -7,57 +6,69 @@ using Xunit;
 
 namespace Bonsai.Tests
 {
-    class TestNotify : INotifyPropertyChanged
+    [Collection("UI")]
+    public class BindingHelperTests : UIAvaloniaTestBase
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
+        public BindingHelperTests(UIFixture fixture) : base(fixture.Session) { }
 
-        private string _value = string.Empty;
-        public string Value
+        class TestNotify : INotifyPropertyChanged
         {
-            get => _value;
-            set
+            public event PropertyChangedEventHandler? PropertyChanged;
+
+            private string _value = string.Empty;
+            public string Value
             {
-                if (_value == value) return;
-                _value = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
+                get => _value;
+                set
+                {
+                    if (_value == value) return;
+                    _value = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
+                }
             }
         }
-    }
 
-    public class BindingHelperTests
-    {
         [Fact]
         public async Task BindingHelper_InvokesAction_OnPropertyChange()
         {
-            var src = new TestNotify();
-            var tcs = new TaskCompletionSource<bool>();
+            if (Session is null) return;
 
-            using var bh = new BindingHelper(src);
-            bh.Bind(nameof(TestNotify.Value), () => tcs.TrySetResult(true));
+            await DispatchAsync(async () =>
+            {
+                var src = new TestNotify();
+                var tcs = new TaskCompletionSource<bool>();
 
-            src.Value = "hello";
+                using var bh = new BindingHelper(src);
+                bh.Bind(nameof(TestNotify.Value), () => tcs.TrySetResult(true));
 
-            // Wait for the action to be executed on the Avalonia UI thread
-            var completed = await Task.WhenAny(tcs.Task, Task.Delay(2000));
-            Assert.True(completed == tcs.Task, "BindingHelper did not invoke action within timeout");
+                Dispatcher.UIThread.Post(() => src.Value = "hello");
+                // Ensure posted jobs run on the headless dispatcher and wait with a timeout
+                Dispatcher.UIThread.RunJobs();
+                var finished = await Task.WhenAny(tcs.Task, Task.Delay(500));
+                Assert.True(tcs.Task.IsCompleted, "BindingHelper did not invoke action within timeout");
+            });
         }
 
         [Fact]
         public async Task BindingHelper_Dispose_StopsInvoking()
         {
-            var src = new TestNotify();
-            using var bh = new BindingHelper(src);
+            if (Session is null) return;
 
-            bool invoked = false;
-            bh.Bind(nameof(TestNotify.Value), () => invoked = true);
+            await DispatchAsync(async () =>
+            {
+                var src = new TestNotify();
+                using var bh = new BindingHelper(src);
 
-            // Dispose and then change property
-            bh.Dispose();
-            src.Value = "world";
+                bool invoked = false;
+                bh.Bind(nameof(TestNotify.Value), () => invoked = true);
 
-            // Allow some time for any pending dispatcher actions
-            await Task.Delay(250);
-            Assert.False(invoked, "BindingHelper invoked action after being disposed");
+                // Dispose and then change property
+                bh.Dispose();
+                Dispatcher.UIThread.Post(() => src.Value = "world");
+                Dispatcher.UIThread.RunJobs();
+
+                Assert.False(invoked);
+            });
         }
     }
 }

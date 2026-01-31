@@ -1,7 +1,5 @@
 using System;
-using System.ComponentModel;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Bonsai.UI.ViewModels;
 
 namespace Bonsai.UI;

@@ -1,0 +1,30 @@
+AppDir:
+  path: ./AppDir
+  app_info:
+    id: com.schwartzkamel.bonsai
+    path: AppRun
+    exec: usr/bin/Bonsai.UI
+    exec_args: $@
+    icon: usr/share/icons/bonsai.png
+    mimetypes: []
+  files:
+    include:
+      - ./publish/linux-x64/*
+    exclude:
+      - .git/*
+      - .github/*
+      - src/*
+      - tests/*
+      - docs/*
+      - scripts/*
+    rename:
+      - source: ./publish/linux-x64/Bonsai.UI
+        destination: ./usr/bin/Bonsai
+  appimage:
+    arch: x86_64
+    order:
+      - AppRun
+      - usr/bin/Bonsai
+      - usr/share/applications/*
+      - usr/share/icons/*
+    sign: false

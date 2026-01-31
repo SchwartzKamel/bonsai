@@ -39,7 +39,9 @@ publish-mac: check-sdk
 publish-all: publish-linux publish-win publish-mac
 
 package-linux: publish-linux
-	chmod +x scripts/pack-appimage.sh && scripts/pack-appimage.sh ./publish/linux-x64 ./artifacts
+	# Build AppImage using appimage-builder
+	appimage-builder --recipe appimage-builder.yml
+	mv Bonsai-x86_64.AppImage ./artifacts/Bonsai-linux-x64.AppImage
 
 package-win: publish-win
 	pwsh -File scripts/build-msi.ps1 -BinariesDir ./publish/win-x64 -OutputDir ./artifacts

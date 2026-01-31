@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="3c3578e3-1890-43dc-819a-d0bd73104696" name="@0siris 2026-01-30 17:31:11" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-01-30T17:31:11.6637878-08:00" queuing="2026-01-30T17:31:11.6637878-08:00" start="2026-01-30T17:31:10.7212253-08:00" finish="2026-01-30T17:31:13.9606573-08:00" />
+  <TestSettings name="default" id="3409a84f-b336-4f2d-84fe-2e72d49692dd">
+    <Deployment runDeploymentRoot="_0siris_2026-01-30_17_31_11" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="29d44d91-eb78-4a13-8b14-a31fea8861a7" testId="3b419797-ca16-f335-1a5f-43f631300cba" testName="Bonsai.Tests.ViewModel.MainWindowViewModelTests.ConstructorSetsLastUpdated" computerName="0siris" duration="00:00:00.0038162" startTime="2026-01-30T17:31:11.6057226-08:00" endTime="2026-01-30T17:31:11.6057378-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29d44d91-eb78-4a13-8b14-a31fea8861a7" />
+    <UnitTestResult executionId="eda6f435-21f0-4a39-bf37-555083ee07b1" testId="1d653aa2-35f7-7605-7ea6-45a015533a11" testName="Bonsai.Tests.ViewModel.MainWindowViewModelTests.RefreshUpdatesLastUpdated" computerName="0siris" duration="00:00:00.0029318" startTime="2026-01-30T17:31:11.6379211-08:00" endTime="2026-01-30T17:31:11.6379211-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eda6f435-21f0-4a39-bf37-555083ee07b1" />
+    <UnitTestResult executionId="1e403667-c5fd-4017-a1c1-aed47cee5b2e" testId="f74ff9ba-ae02-80bb-7a31-87e07915e7bc" testName="Bonsai.Tests.ViewModelTests.RefreshUpdatesLastUpdated" computerName="0siris" duration="00:00:00.0040997" startTime="2026-01-30T17:31:11.6110724-08:00" endTime="2026-01-30T17:31:11.6110725-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1e403667-c5fd-4017-a1c1-aed47cee5b2e" />
+    <UnitTestResult executionId="f23c0597-93a1-4f7a-b71b-075400cfe6c3" testId="ca289074-eeb7-cef9-c70e-82f6cdc9b139" testName="Bonsai.Tests.HelloWorldTest.ViewModelHasDefaultMessage" computerName="0siris" duration="00:00:00.0021645" startTime="2026-01-30T17:31:11.6419685-08:00" endTime="2026-01-30T17:31:11.6419685-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f23c0597-93a1-4f7a-b71b-075400cfe6c3">
+      <Output>
+        <ErrorInfo>
+          <Message>System.NullReferenceException : Object reference not set to an instance of an object.</Message>
+          <StackTrace>   at Bonsai.UI.ViewModels.MainWindowViewModel..ctor(IDateTimeService dateTimeService) in /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/ViewModels/MainWindowViewModel.cs:line 14
+   at Bonsai.Tests.HelloWorldTest.ViewModelHasDefaultMessage() in /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/HelloWorldTest.cs:line 12
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="703402db-47d3-433d-82c0-48d7f58f5b71" testId="b7cb19bf-b1e1-0166-5d80-a6532461782e" testName="Bonsai.Tests.UITests.MessageTitleTests.MessageUpdateReflectsInUI" computerName="0siris" duration="00:00:00.0005728" startTime="2026-01-30T17:31:11.6489851-08:00" endTime="2026-01-30T17:31:11.6489851-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="703402db-47d3-433d-82c0-48d7f58f5b71">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.</Message>
+          <StackTrace>   at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+   at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+   at Avalonia.Controls.Window..ctor()
+   at Bonsai.UI.MainWindow..ctor() in /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs:line 14
+   at Bonsai.Tests.UITests.MessageTitleTests.MessageUpdateReflectsInUI() in /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageTitleTests.cs:line 23
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="277dba89-1058-4de0-a054-02a6c1c818c5" testId="3f834612-b623-9af5-69ee-f4cd2443f7e8" testName="Bonsai.Tests.UITests.RefreshFlowTests.RefreshButtonUpdatesLastUpdatedText" computerName="0siris" duration="00:00:00.0455622" startTime="2026-01-30T17:31:11.6485433-08:00" endTime="2026-01-30T17:31:11.6485434-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="277dba89-1058-4de0-a054-02a6c1c818c5">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.</Message>
+          <StackTrace>   at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+   at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+   at Avalonia.Controls.Window..ctor()
+   at Bonsai.UI.MainWindow..ctor() in /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs:line 14
+   at Bonsai.Tests.UITests.RefreshFlowTests.RefreshButtonUpdatesLastUpdatedText() in /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/RefreshFlowTests.cs:line 31
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="11b94c36-371b-4ea5-a901-a40f7f30ae3a" testId="e3325d17-8fc4-fa37-f0ef-48fa8e496ba6" testName="Bonsai.Tests.ViewModelTests.MessageAndTitleSettersWork" computerName="0siris" duration="00:00:00.0002247" startTime="2026-01-30T17:31:11.6123936-08:00" endTime="2026-01-30T17:31:11.6123936-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="11b94c36-371b-4ea5-a901-a40f7f30ae3a" />
+    <UnitTestResult executionId="771e9b51-01ac-4154-8949-3e9de1c3a8d7" testId="b96284c9-110f-2519-5f42-32828eae7e95" testName="Bonsai.Tests.UITests.MessageAndTitleTests.MessageChangeUpdatesUI" computerName="0siris" duration="00:00:00.0453783" startTime="2026-01-30T17:31:11.6480482-08:00" endTime="2026-01-30T17:31:11.6480482-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="771e9b51-01ac-4154-8949-3e9de1c3a8d7">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.</Message>
+          <StackTrace>   at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+   at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+   at Avalonia.Controls.Window..ctor()
+   at Bonsai.UI.MainWindow..ctor() in /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs:line 14
+   at Bonsai.Tests.UITests.MessageAndTitleTests.MessageChangeUpdatesUI() in /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageAndTitleTests.cs:line 22
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da4b6348-238b-4186-85ab-31f266487734" testId="5d554158-5c71-a612-16dc-79801e95ca19" testName="Bonsai.Tests.UITests.MessageTitleTests.TitleUpdateReflectsInUI" computerName="0siris" duration="00:00:00.0454332" startTime="2026-01-30T17:31:11.6477460-08:00" endTime="2026-01-30T17:31:11.6477461-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da4b6348-238b-4186-85ab-31f266487734">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.</Message>
+          <StackTrace>   at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+   at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+   at Avalonia.Controls.Window..ctor()
+   at Bonsai.UI.MainWindow..ctor() in /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs:line 14
+   at Bonsai.Tests.UITests.MessageTitleTests.TitleUpdateReflectsInUI() in /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageTitleTests.cs:line 49
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1fa15625-eb51-4cd2-90a9-c215df2db763" testId="9e44cca9-60fe-591b-c4a8-aa70361e8e1b" testName="Bonsai.Tests.BindingHelperTests.BindingHelper_InvokesAction_OnPropertyChange" computerName="0siris" duration="00:00:02.0090251" startTime="2026-01-30T17:31:13.8848201-08:00" endTime="2026-01-30T17:31:13.8848203-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1fa15625-eb51-4cd2-90a9-c215df2db763">
+      <Output>
+        <ErrorInfo>
+          <Message>BindingHelper did not invoke action within timeout
+Expected: True
+Actual:   False</Message>
+          <StackTrace>   at Bonsai.Tests.BindingHelperTests.BindingHelper_InvokesAction_OnPropertyChange() in /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/BindingHelperTests.cs:line 42
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f7a2ec88-5666-4c98-b1fd-5f940a351400" testId="c2766ed4-3fe6-5726-5733-014e465e6d65" testName="Bonsai.Tests.UITests.MessageAndTitleTests.TitleChangeUpdatesWindowAndTitleTextBlock" computerName="0siris" duration="00:00:00.0006319" startTime="2026-01-30T17:31:11.6487735-08:00" endTime="2026-01-30T17:31:11.6487735-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f7a2ec88-5666-4c98-b1fd-5f940a351400">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.</Message>
+          <StackTrace>   at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+   at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+   at Avalonia.Controls.Window..ctor()
+   at Bonsai.UI.MainWindow..ctor() in /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs:line 14
+   at Bonsai.Tests.UITests.MessageAndTitleTests.TitleChangeUpdatesWindowAndTitleTextBlock() in /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageAndTitleTests.cs:line 50
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e43bd82f-0f4d-4264-b83b-dcf1c6824e52" testId="314f8f21-9652-ff0f-b0b4-9de585a86bac" testName="Bonsai.Tests.ViewModel.MainWindowViewModelTests.MessagePropertyNotifiesAndDefaults" computerName="0siris" duration="00:00:00.0006424" startTime="2026-01-30T17:31:11.6378554-08:00" endTime="2026-01-30T17:31:11.6378560-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e43bd82f-0f4d-4264-b83b-dcf1c6824e52" />
+    <UnitTestResult executionId="ee86743a-7b62-4271-a9a1-0a60fc7ee78e" testId="a6cfa63b-8aa0-fd86-fc7a-f9ab448a5e4c" testName="Bonsai.Tests.BindingHelperTests.BindingHelper_Dispose_StopsInvoking" computerName="0siris" duration="00:00:00.2643528" startTime="2026-01-30T17:31:11.8657362-08:00" endTime="2026-01-30T17:31:11.8657362-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee86743a-7b62-4271-a9a1-0a60fc7ee78e" />
+    <UnitTestResult executionId="7d60d8f7-c99d-49e3-b03c-d35b77567bfc" testId="0097f4fe-075e-a369-8afa-d576785cb597" testName="Bonsai.Tests.ViewModelTests.ConstructorSetsLastUpdated" computerName="0siris" duration="00:00:00.0000577" startTime="2026-01-30T17:31:11.6375751-08:00" endTime="2026-01-30T17:31:11.6375751-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7d60d8f7-c99d-49e3-b03c-d35b77567bfc" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Bonsai.Tests.ViewModelTests.RefreshUpdatesLastUpdated" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="f74ff9ba-ae02-80bb-7a31-87e07915e7bc">
+      <Execution id="1e403667-c5fd-4017-a1c1-aed47cee5b2e" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.ViewModelTests" name="RefreshUpdatesLastUpdated" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.UITests.MessageAndTitleTests.TitleChangeUpdatesWindowAndTitleTextBlock" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="c2766ed4-3fe6-5726-5733-014e465e6d65">
+      <Execution id="f7a2ec88-5666-4c98-b1fd-5f940a351400" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.UITests.MessageAndTitleTests" name="TitleChangeUpdatesWindowAndTitleTextBlock" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.UITests.MessageTitleTests.TitleUpdateReflectsInUI" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="5d554158-5c71-a612-16dc-79801e95ca19">
+      <Execution id="da4b6348-238b-4186-85ab-31f266487734" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.UITests.MessageTitleTests" name="TitleUpdateReflectsInUI" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.ViewModelTests.ConstructorSetsLastUpdated" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="0097f4fe-075e-a369-8afa-d576785cb597">
+      <Execution id="7d60d8f7-c99d-49e3-b03c-d35b77567bfc" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.ViewModelTests" name="ConstructorSetsLastUpdated" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.BindingHelperTests.BindingHelper_Dispose_StopsInvoking" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="a6cfa63b-8aa0-fd86-fc7a-f9ab448a5e4c">
+      <Execution id="ee86743a-7b62-4271-a9a1-0a60fc7ee78e" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.BindingHelperTests" name="BindingHelper_Dispose_StopsInvoking" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.UITests.MessageAndTitleTests.MessageChangeUpdatesUI" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="b96284c9-110f-2519-5f42-32828eae7e95">
+      <Execution id="771e9b51-01ac-4154-8949-3e9de1c3a8d7" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.UITests.MessageAndTitleTests" name="MessageChangeUpdatesUI" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.ViewModelTests.MessageAndTitleSettersWork" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="e3325d17-8fc4-fa37-f0ef-48fa8e496ba6">
+      <Execution id="11b94c36-371b-4ea5-a901-a40f7f30ae3a" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.ViewModelTests" name="MessageAndTitleSettersWork" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.BindingHelperTests.BindingHelper_InvokesAction_OnPropertyChange" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="9e44cca9-60fe-591b-c4a8-aa70361e8e1b">
+      <Execution id="1fa15625-eb51-4cd2-90a9-c215df2db763" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.BindingHelperTests" name="BindingHelper_InvokesAction_OnPropertyChange" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.ViewModel.MainWindowViewModelTests.MessagePropertyNotifiesAndDefaults" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="314f8f21-9652-ff0f-b0b4-9de585a86bac">
+      <Execution id="e43bd82f-0f4d-4264-b83b-dcf1c6824e52" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.ViewModel.MainWindowViewModelTests" name="MessagePropertyNotifiesAndDefaults" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.UITests.RefreshFlowTests.RefreshButtonUpdatesLastUpdatedText" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="3f834612-b623-9af5-69ee-f4cd2443f7e8">
+      <Execution id="277dba89-1058-4de0-a054-02a6c1c818c5" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.UITests.RefreshFlowTests" name="RefreshButtonUpdatesLastUpdatedText" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.ViewModel.MainWindowViewModelTests.RefreshUpdatesLastUpdated" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="1d653aa2-35f7-7605-7ea6-45a015533a11">
+      <Execution id="eda6f435-21f0-4a39-bf37-555083ee07b1" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.ViewModel.MainWindowViewModelTests" name="RefreshUpdatesLastUpdated" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.HelloWorldTest.ViewModelHasDefaultMessage" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="ca289074-eeb7-cef9-c70e-82f6cdc9b139">
+      <Execution id="f23c0597-93a1-4f7a-b71b-075400cfe6c3" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.HelloWorldTest" name="ViewModelHasDefaultMessage" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.ViewModel.MainWindowViewModelTests.ConstructorSetsLastUpdated" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="3b419797-ca16-f335-1a5f-43f631300cba">
+      <Execution id="29d44d91-eb78-4a13-8b14-a31fea8861a7" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.ViewModel.MainWindowViewModelTests" name="ConstructorSetsLastUpdated" />
+    </UnitTest>
+    <UnitTest name="Bonsai.Tests.UITests.MessageTitleTests.MessageUpdateReflectsInUI" storage="/home/lafia/ai_agents/curly-broccoli/tests/bonsai.tests/bin/release/net10.0/bonsai.tests.dll" id="b7cb19bf-b1e1-0166-5d80-a6532461782e">
+      <Execution id="703402db-47d3-433d-82c0-48d7f58f5b71" />
+      <TestMethod codeBase="/home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/bin/Release/net10.0/Bonsai.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="Bonsai.Tests.UITests.MessageTitleTests" name="MessageUpdateReflectsInUI" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3b419797-ca16-f335-1a5f-43f631300cba" executionId="29d44d91-eb78-4a13-8b14-a31fea8861a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1d653aa2-35f7-7605-7ea6-45a015533a11" executionId="eda6f435-21f0-4a39-bf37-555083ee07b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f74ff9ba-ae02-80bb-7a31-87e07915e7bc" executionId="1e403667-c5fd-4017-a1c1-aed47cee5b2e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ca289074-eeb7-cef9-c70e-82f6cdc9b139" executionId="f23c0597-93a1-4f7a-b71b-075400cfe6c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b7cb19bf-b1e1-0166-5d80-a6532461782e" executionId="703402db-47d3-433d-82c0-48d7f58f5b71" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3f834612-b623-9af5-69ee-f4cd2443f7e8" executionId="277dba89-1058-4de0-a054-02a6c1c818c5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e3325d17-8fc4-fa37-f0ef-48fa8e496ba6" executionId="11b94c36-371b-4ea5-a901-a40f7f30ae3a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b96284c9-110f-2519-5f42-32828eae7e95" executionId="771e9b51-01ac-4154-8949-3e9de1c3a8d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d554158-5c71-a612-16dc-79801e95ca19" executionId="da4b6348-238b-4186-85ab-31f266487734" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9e44cca9-60fe-591b-c4a8-aa70361e8e1b" executionId="1fa15625-eb51-4cd2-90a9-c215df2db763" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c2766ed4-3fe6-5726-5733-014e465e6d65" executionId="f7a2ec88-5666-4c98-b1fd-5f940a351400" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="314f8f21-9652-ff0f-b0b4-9de585a86bac" executionId="e43bd82f-0f4d-4264-b83b-dcf1c6824e52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a6cfa63b-8aa0-fd86-fc7a-f9ab448a5e4c" executionId="ee86743a-7b62-4271-a9a1-0a60fc7ee78e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0097f4fe-075e-a369-8afa-d576785cb597" executionId="7d60d8f7-c99d-49e3-b03c-d35b77567bfc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="14" executed="14" passed="7" failed="7" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.4.5+1caef2f33e (64-bit .NET 10.0.2)
+[xUnit.net 00:00:00.48]   Discovering: Bonsai.Tests
+[xUnit.net 00:00:00.50]   Discovered:  Bonsai.Tests
+[xUnit.net 00:00:00.50]   Starting:    Bonsai.Tests
+[xUnit.net 00:00:00.58]       System.NullReferenceException : Object reference not set to an instance of an object.
+[xUnit.net 00:00:00.58]       Stack Trace:
+[xUnit.net 00:00:00.58]         /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/ViewModels/MainWindowViewModel.cs(14,0): at Bonsai.UI.ViewModels.MainWindowViewModel..ctor(IDateTimeService dateTimeService)
+[xUnit.net 00:00:00.58]         /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/HelloWorldTest.cs(12,0): at Bonsai.Tests.HelloWorldTest.ViewModelHasDefaultMessage()
+[xUnit.net 00:00:00.58]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:00.58]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:00.59]       System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.
+[xUnit.net 00:00:00.59]       Stack Trace:
+[xUnit.net 00:00:00.59]            at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Window..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs(14,0): at Bonsai.UI.MainWindow..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageTitleTests.cs(49,0): at Bonsai.Tests.UITests.MessageTitleTests.TitleUpdateReflectsInUI()
+[xUnit.net 00:00:00.59]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:00.59]       System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.
+[xUnit.net 00:00:00.59]       Stack Trace:
+[xUnit.net 00:00:00.59]            at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Window..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs(14,0): at Bonsai.UI.MainWindow..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageAndTitleTests.cs(22,0): at Bonsai.Tests.UITests.MessageAndTitleTests.MessageChangeUpdatesUI()
+[xUnit.net 00:00:00.59]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:00.59]       System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.
+[xUnit.net 00:00:00.59]       Stack Trace:
+[xUnit.net 00:00:00.59]            at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Window..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs(14,0): at Bonsai.UI.MainWindow..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/RefreshFlowTests.cs(31,0): at Bonsai.Tests.UITests.RefreshFlowTests.RefreshButtonUpdatesLastUpdatedText()
+[xUnit.net 00:00:00.59]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:00.59]       System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.
+[xUnit.net 00:00:00.59]       Stack Trace:
+[xUnit.net 00:00:00.59]            at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Window..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs(14,0): at Bonsai.UI.MainWindow..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageAndTitleTests.cs(50,0): at Bonsai.Tests.UITests.MessageAndTitleTests.TitleChangeUpdatesWindowAndTitleTextBlock()
+[xUnit.net 00:00:00.59]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:00.59]       System.InvalidOperationException : Unable to locate 'Avalonia.Platform.IWindowingPlatform'.
+[xUnit.net 00:00:00.59]       Stack Trace:
+[xUnit.net 00:00:00.59]            at Avalonia.LocatorExtensions.GetRequiredService[T](IAvaloniaDependencyResolver resolver)
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Platform.PlatformManager.CreateWindow()
+[xUnit.net 00:00:00.59]            at Avalonia.Controls.Window..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/src/Bonsai.UI/MainWindow.axaml.cs(14,0): at Bonsai.UI.MainWindow..ctor()
+[xUnit.net 00:00:00.59]         /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/UITests/MessageTitleTests.cs(23,0): at Bonsai.Tests.UITests.MessageTitleTests.MessageUpdateReflectsInUI()
+[xUnit.net 00:00:00.59]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:02.82]       BindingHelper did not invoke action within timeout
+[xUnit.net 00:00:02.83]       Expected: True
+[xUnit.net 00:00:02.83]       Actual:   False
+[xUnit.net 00:00:02.83]       Stack Trace:
+[xUnit.net 00:00:02.83]         /home/lafia/ai_agents/curly-broccoli/tests/Bonsai.Tests/BindingHelperTests.cs(42,0): at Bonsai.Tests.BindingHelperTests.BindingHelper_InvokesAction_OnPropertyChange()
+[xUnit.net 00:00:02.83]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:02.83]   Finished:    Bonsai.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="0siris" outcome="Error" timestamp="2026-01-30T17:31:11.6683036-08:00">
+        <Text>[xUnit.net 00:00:00.58]     Bonsai.Tests.HelloWorldTest.ViewModelHasDefaultMessage [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="0siris" outcome="Error" timestamp="2026-01-30T17:31:11.6684706-08:00">
+        <Text>[xUnit.net 00:00:00.59]     Bonsai.Tests.UITests.MessageTitleTests.TitleUpdateReflectsInUI [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="0siris" outcome="Error" timestamp="2026-01-30T17:31:11.6684911-08:00">
+        <Text>[xUnit.net 00:00:00.59]     Bonsai.Tests.UITests.MessageAndTitleTests.MessageChangeUpdatesUI [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="0siris" outcome="Error" timestamp="2026-01-30T17:31:11.6685164-08:00">
+        <Text>[xUnit.net 00:00:00.59]     Bonsai.Tests.UITests.RefreshFlowTests.RefreshButtonUpdatesLastUpdatedText [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="0siris" outcome="Error" timestamp="2026-01-30T17:31:11.6685298-08:00">
+        <Text>[xUnit.net 00:00:00.59]     Bonsai.Tests.UITests.MessageAndTitleTests.TitleChangeUpdatesWindowAndTitleTextBlock [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="0siris" outcome="Error" timestamp="2026-01-30T17:31:11.6685617-08:00">
+        <Text>[xUnit.net 00:00:00.59]     Bonsai.Tests.UITests.MessageTitleTests.MessageUpdateReflectsInUI [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="0siris" outcome="Error" timestamp="2026-01-30T17:31:13.8827326-08:00">
+        <Text>[xUnit.net 00:00:02.82]     Bonsai.Tests.BindingHelperTests.BindingHelper_InvokesAction_OnPropertyChange [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,3 +1,4 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Bonsai.UI.ViewModels;
@@ -10,7 +11,7 @@ public partial class MainWindowViewModel : ObservableObject
 
     public MainWindowViewModel(IDateTimeService dateTimeService)
     {
-        _dateTimeService = dateTimeService;
+        _dateTimeService = dateTimeService ?? throw new ArgumentNullException(nameof(dateTimeService));
         LastUpdated = _dateTimeService.UtcNow.ToString("u");
     }
 

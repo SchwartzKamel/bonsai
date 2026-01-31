@@ -36,7 +36,13 @@ class Program
 
     // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure<App>()
-            .UsePlatformDetect()
+    {
+        var builder = AppBuilder.Configure<App>()
             .LogToTrace();
+
+        // Headless mode requires the Avalonia.Headless package; fall back to platform detection when it's not available.
+        builder = builder.UsePlatformDetect();
+
+        return builder;
+    }
 }

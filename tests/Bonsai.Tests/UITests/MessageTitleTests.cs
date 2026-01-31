@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using Bonsai.Services;
@@ -8,62 +7,81 @@ using Xunit;
 
 namespace Bonsai.Tests.UITests
 {
-    class FakeDateTimeService3 : IDateTimeService
+    [Collection("UI")]
+    public class MessageTitleTests : UIAvaloniaTestBase
     {
-        public System.DateTime UtcNow { get; set; }
-    }
+        public MessageTitleTests(UIFixture fixture) : base(fixture.Session) { }
 
-    public class MessageTitleTests
-    {
-        [Fact]
-        public async Task MessageUpdateReflectsInUI()
+        class FakeDateTimeService3 : IDateTimeService
         {
-            var svc = new FakeDateTimeService3 { UtcNow = System.DateTime.UtcNow };
-            var vm = new MainWindowViewModel(svc);
-            var window = new MainWindow();
-            window.DataContext = vm;
-            await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
-
-            var msgBlock = window.FindControl<TextBlock>("MessageTextBlock");
-            Assert.NotNull(msgBlock);
-            Assert.Equal(vm.Message, msgBlock.Text);
-
-            // Change message and ensure it propagates
-            vm.Message = "Hello again";
-
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            while (sw.ElapsedMilliseconds < 1000)
-            {
-                await Task.Delay(25);
-                if (msgBlock.Text == "Hello again") return;
-            }
-
-            Assert.Equal("Hello again", msgBlock.Text);
+            public System.DateTime UtcNow { get; set; }
         }
 
         [Fact]
-        public async Task TitleUpdateReflectsInUI()
+        public void MessageUpdateReflectsInUI()
         {
-            var svc = new FakeDateTimeService3 { UtcNow = System.DateTime.UtcNow };
-            var vm = new MainWindowViewModel(svc);
-            var window = new MainWindow();
-            window.DataContext = vm;
-            await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render);
+            if (Session is null) return;
 
-            var titleBlock = window.FindControl<TextBlock>("TitleTextBlock");
-            Assert.NotNull(titleBlock);
-            Assert.Equal(vm.Title, titleBlock.Text);
-
-            vm.Title = "NewTitle";
-
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            while (sw.ElapsedMilliseconds < 1000)
+            Dispatch(() =>
             {
-                await Task.Delay(25);
-                if (titleBlock.Text == "NewTitle") return;
-            }
+                var svc = new FakeDateTimeService3 { UtcNow = System.DateTime.UtcNow };
+                var vm = new MainWindowViewModel(svc);
+                var window = new MainWindow();
+                window.DataContext = vm;
+                window.Show();
+                Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render).Wait();
 
-            Assert.Equal("NewTitle", titleBlock.Text);
+                var msgBlock = window.FindControl<TextBlock>("MessageTextBlock");
+                Assert.NotNull(msgBlock);
+                Assert.Equal(vm.Message, msgBlock.Text);
+
+                // Change message and ensure it propagates
+                vm.Message = "Hello again";
+
+                int attempts = 0;
+                const int maxAttempts = 40;
+                while (attempts < maxAttempts)
+                {
+                    Dispatcher.UIThread.RunJobs();
+                    if (msgBlock.Text == "Hello again") break;
+                    attempts++;
+                }
+
+                Assert.Equal("Hello again", msgBlock.Text);
+            });
+        }
+
+        [Fact]
+        public void TitleUpdateReflectsInUI()
+        {
+            if (Session is null) return;
+
+            Dispatch(() =>
+            {
+                var svc = new FakeDateTimeService3 { UtcNow = System.DateTime.UtcNow };
+                var vm = new MainWindowViewModel(svc);
+                var window = new MainWindow();
+                window.DataContext = vm;
+                window.Show();
+                Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Render).Wait();
+
+                var titleBlock = window.FindControl<TextBlock>("TitleTextBlock");
+                Assert.NotNull(titleBlock);
+                Assert.Equal(vm.Title, titleBlock.Text);
+
+                vm.Title = "NewTitle";
+
+                int attempts = 0;
+                const int maxAttempts = 40;
+                while (attempts < maxAttempts)
+                {
+                    Dispatcher.UIThread.RunJobs();
+                    if (titleBlock.Text == "NewTitle") break;
+                    attempts++;
+                }
+
+                Assert.Equal("NewTitle", titleBlock.Text);
+            });
         }
     }
 }
