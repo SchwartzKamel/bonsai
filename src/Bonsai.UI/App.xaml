@@ -1,6 +1,0 @@
-<Application xmlns="https://github.com/avaloniaui"
-             x:Class="Bonsai.UI.App">
-  <Application.Resources>
-    <!-- App-wide resources go here -->
-  </Application.Resources>
-</Application>
