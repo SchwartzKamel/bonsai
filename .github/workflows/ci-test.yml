@@ -68,12 +68,10 @@ jobs:
           dotnet tool install -g trx2junit
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
           mkdir -p ./test-results/junit
-          for trx in ./test-results/*.trx; do
-            if [ -f "$trx" ]; then
-              base=$(basename "$trx" .trx)
-              trx2junit --output "./test-results/junit" "$trx"
-            fi
-          done
+          trx_files=($(ls ./test-results/*.trx 2>/dev/null || true))
+          if [ ${#trx_files[@]} -gt 0 ]; then
+            trx2junit --output "./test-results/junit" "${trx_files[@]}"
+          fi
         shell: bash
 
       - name: Convert TRX to JUnit (Windows)
@@ -84,9 +82,9 @@ jobs:
           $envPath = Join-Path $HOME ".dotnet/tools"
           Add-Content -Path $env:GITHUB_PATH -Value $envPath
           New-Item -Path .\test-results\junit -ItemType Directory -Force
-          Get-ChildItem .\test-results\*.trx -ErrorAction SilentlyContinue | ForEach-Object {
-            $outputDir = ".\test-results\junit"
-            & trx2junit --output $outputDir $_.FullName
+          $trxFiles = Get-ChildItem .\test-results\*.trx -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName }
+          if ($trxFiles.Count -gt 0) {
+            & trx2junit --output .\test-results\junit $trxFiles
           }
 
       - name: Publish test results
