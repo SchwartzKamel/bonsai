@@ -36,11 +36,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.x'
-      - name: Install fuse for AppImage (Linux)
-        if: runner.os == 'Linux'
-        run: sudo apt-get install -y fuse
-
+          dotnet-version: '8.x'
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
         run: |
@@ -59,7 +55,7 @@ jobs:
           dotnet build -c Release
 
       - name: Publish
-        run: dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
+        run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
         shell: bash
 
 
@@ -71,7 +67,7 @@ jobs:
           ./scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
 
       - name: Package (macOS DMG)
-        if: runner.os == 'MacOS'
+        if: runner.os == 'macOS'
         env:
           CI: true
         run: |
