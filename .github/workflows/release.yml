@@ -56,17 +56,21 @@ jobs:
           dotnet build -c Release
 
       - name: Publish
-        run: dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
+        run: dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
         shell: bash
 
 
       - name: Package (Linux AppImage)
         if: runner.os == 'Linux'
+        env:
+          CI: true
         run: |
           ./scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
 
       - name: Package (macOS DMG)
-        if: runner.os == 'macOS'
+        if: runner.os == 'MacOS'
+        env:
+          CI: true
         run: |
           chmod +x scripts/make-dmg.sh && scripts/make-dmg.sh ./publish/${{ matrix.rid }} ./artifacts
 

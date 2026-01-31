@@ -1,4 +1,6 @@
 name: CI Test
+permissions:
+  checks: write
 
 on:
   push:

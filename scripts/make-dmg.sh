@@ -41,20 +41,19 @@ cat > "$APP_BUNDLE/Contents/Info.plist" <<EOF
 </plist>
 EOF
 
-DMG_OUT="$OUT_DIR/$APP_NAME.dmg"
-if command -v hdiutil >/dev/null 2>&1; then
-  hdiutil create -volname "$APP_NAME" -srcfolder "$APP_BUNDLE" -ov -format UDZO "$DMG_OUT"
-  echo "DMG created at $DMG_OUT"
+# In CI, use zip to avoid space issues with hdiutil
+if [[ "${CI:-}" == "true" || "${GITHUB_ACTIONS:-}" == "true" ]]; then
+  require_cmd zip
+  zip -r "$OUT_DIR/$APP_NAME-osx-x64.zip" "$APP_BUNDLE"
+  echo "Zip created at $OUT_DIR/$APP_NAME-osx-x64.zip (CI mode)"
 else
-  echo "hdiutil not found. Creating a zip fallback."
-  if command -v zip >/dev/null 2>&1; then
+  DMG_OUT="$OUT_DIR/$APP_NAME.dmg"
+  if command -v hdiutil >/dev/null 2>&1; then
+    hdiutil create -volname "$APP_NAME" -srcfolder "$APP_BUNDLE" -ov -format UDZO "$DMG_OUT"
+    echo "DMG created at $DMG_OUT"
+  else
+    require_cmd zip
     zip -r "$OUT_DIR/$APP_NAME-osx-x64.zip" "$APP_BUNDLE"
     echo "Zip created at $OUT_DIR/$APP_NAME-osx-x64.zip"
-  elif command -v tar >/dev/null 2>&1; then
-    tar -czf "$OUT_DIR/$APP_NAME-osx-x64.tar.gz" -C "$(pwd)" "$APP_BUNDLE"
-    echo "Tarball created at $OUT_DIR/$APP_NAME-osx-x64.tar.gz"
-  else
-    echo "ERROR: neither hdiutil, zip, nor tar found. Cannot produce macOS distribution on this host.";
-    exit 1
   fi
 fi
