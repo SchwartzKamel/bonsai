@@ -48,11 +48,9 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $url = "https://github.com/wixtoolset/wix/releases/download/wix-v4.0.4/wix4004-x64.msi"
-          Invoke-WebRequest -Uri $url -OutFile "wix.msi"
-          Start-Process msiexec.exe -ArgumentList "/i wix.msi /quiet /norestart ADDLOCAL=Tools" -Wait
-          Remove-Item "wix.msi" -Force
-          echo "C:\Program Files\WiX Toolset v4.0\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          choco install wixtoolset.v4 --yes --force
+          $wixPath = (Get-Command wix).Source | Split-Path -Parent
+          echo $wixPath | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Restore
         run: dotnet restore
