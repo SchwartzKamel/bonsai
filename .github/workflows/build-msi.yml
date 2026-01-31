@@ -16,11 +16,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-      - name: Ensure WiX v4 for .NET 10 compat
-        run: choco upgrade wixtoolset --no-progress
-
-      - name: Install WiX
-        run: choco install wixtoolset --no-progress
+      - name: Install WiX v4
+        run: choco install wixtoolset --version=4.0.4 --no-progress
 
       - name: Restore & Build
         run: |

@@ -69,9 +69,10 @@ jobs:
       - name: Print packaging tool versions (best effort)
         run: |
           echo "dotnet:" && dotnet --info
-          echo "pwsh:" && (pwsh --version 2>/dev/null || true)
-          echo "appimagetool:" && (appimagetool --version 2>/dev/null || true)
-          echo "hdiutil:" && (hdiutil --version 2>/dev/null || true)
+          if command -v pwsh >/dev/null 2>&1; then echo "pwsh:" && pwsh --version; else echo "pwsh: not available"; fi
+          if command -v appimagetool >/dev/null 2>&1; then echo "appimagetool:" && appimagetool --version; else echo "appimagetool: not available"; fi
+          if command -v hdiutil >/dev/null 2>&1; then echo "hdiutil:" && hdiutil --version; else echo "hdiutil: not available"; fi
+        shell: bash
 
 
       - name: Package (platform-specific)
