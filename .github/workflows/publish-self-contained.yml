@@ -49,7 +49,7 @@ jobs:
         shell: pwsh
         run: |
           $version = "4.0.4"
-          $url = "https://github.com/wixtoolset/wix/releases/download/wix-v$version/wix-v$version-x64.msi"
+          $url = "https://github.com/wixtoolset/wix/releases/download/wix4-v$version/wix4-v$version-x64.msi"
           Invoke-WebRequest -Uri $url -OutFile "wix.msi"
           Start-Process msiexec.exe -ArgumentList "/i wix.msi /quiet /norestart ADDLOCAL=Tools" -Wait
           Remove-Item "wix.msi" -Force
@@ -92,9 +92,9 @@ jobs:
         env:
           CI: true
         run: |
-          if [ "${{ matrix.pack }}" = "linux" ]; then
+          if [ "${{ runner.os }}" == "Linux" ]; then
             ./scripts/pack-appimage.sh ./publish/${{ matrix.rid }} ./artifacts
-          elif [ "${{ matrix.pack }}" = "macos" ]; then
+          elif [ "${{ runner.os }}" == "macOS" ]; then
             chmod +x scripts/make-dmg.sh && scripts/make-dmg.sh ./publish/${{ matrix.rid }} ./artifacts
           else
             pwsh -c "./scripts/build-msi.ps1 -BinariesDir ./publish/${{ matrix.rid }} -OutputDir ./artifacts"
