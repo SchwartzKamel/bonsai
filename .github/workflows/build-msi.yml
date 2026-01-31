@@ -19,12 +19,9 @@ jobs:
       - name: Install WiX Toolset v4
         shell: pwsh
         run: |
-          $version = "4.0.4"
-          $url = "https://github.com/wixtoolset/wix/releases/download/wix4-v$version/wix4-v$version-x64.msi"
-          Invoke-WebRequest -Uri $url -OutFile "wix.msi"
-          Start-Process msiexec.exe -ArgumentList "/i wix.msi /quiet /norestart ADDLOCAL=Tools" -Wait
-          Remove-Item "wix.msi" -Force
-          echo "C:\Program Files\WiX Toolset v4.0\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          choco install wix -y
+          $env:PATH += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
+          echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Restore & Build
         run: |
@@ -32,7 +29,7 @@ jobs:
           dotnet build -c Release
 
       - name: Publish Win self-contained
-        run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/win-x64
+        run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/win-x64
         shell: pwsh
 
       - name: Build MSI (WiX)
