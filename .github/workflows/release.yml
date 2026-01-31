@@ -75,6 +75,7 @@ jobs:
 
       - name: Package (Windows MSI)
         if: runner.os == 'Windows'
+        shell: pwsh
         run: |
           ./scripts/build-msi.ps1 -BinariesDir ./publish/${{ matrix.rid }} -OutputDir ./artifacts
 
