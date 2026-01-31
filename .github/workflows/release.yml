@@ -47,7 +47,7 @@ jobs:
 
       - name: Install WiX (Windows)
         if: runner.os == 'Windows'
-        run: choco install wixtoolset --no-progress
+        run: choco install wix --no-progress
 
       - name: Restore & Build
         run: |
