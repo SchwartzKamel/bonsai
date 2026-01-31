@@ -45,3 +45,8 @@ secrets.json
 
 # IDE specific caches
 *.ide
+
+# Roo Commander
+.roo/
+.mdtm/
+.ruru/
