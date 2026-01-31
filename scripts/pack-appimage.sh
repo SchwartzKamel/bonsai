@@ -21,27 +21,63 @@ if [ ! -d "$PUBLISH_DIR" ]; then
 fi
 
 mkdir -p "$OUT_DIR"
-rm -rf "$APPDIR"
-mkdir -p "$APPDIR/usr/bin"
 
-# Copy published files into AppDir
+TEMPLATE_DIR="$PWD/AppDir"
+APPDIR="$PWD/AppDir-new"  # Use a different dir to avoid conflict
+
+# Copy template structure
+rm -rf "$APPDIR"
+if [ -d "$TEMPLATE_DIR" ]; then
+  cp -r "$TEMPLATE_DIR" "$APPDIR"
+fi
+
+# Ensure directories exist
+mkdir -p "$APPDIR/usr/bin"
+mkdir -p "$APPDIR/usr/share/applications"
+mkdir -p "$APPDIR/usr/share/icons"
+
+# Copy published files into AppDir, overwriting bin
+rm -rf "$APPDIR/usr/bin"/*
 cp -r "$PUBLISH_DIR"/* "$APPDIR/usr/bin/"
 
-# Create a basic .desktop file
-mkdir -p "$APPDIR/usr/share/applications"
-cat > "$APPDIR/usr/share/applications/$APP_NAME.desktop" <<EOF
+# Create desktop file at root for AppImage requirement
+cat > "$APPDIR/Bonsai.desktop" <<EOF
 [Desktop Entry]
-Name=$APP_NAME
-Exec=$APP_NAME
-Icon=$APP_NAME
+Name=Bonsai
+Exec=Bonsai.UI
+Icon=bonsai
 Type=Application
 Categories=Utility;
 EOF
 
-# Basic icon placeholder if none provided
-if [ ! -f "$APPDIR/usr/share/icons/$APP_NAME.png" ]; then
+# Also create in applications dir for good measure
+mkdir -p "$APPDIR/usr/share/applications"
+cp "$APPDIR/Bonsai.desktop" "$APPDIR/usr/share/applications/Bonsai.desktop"
+
+# Copy icon to root for appimagetool - use project image
+cp "docs/img/bonsai_mvp.png" "$APPDIR/bonsai.png"
+echo "Icon copied from docs/img/bonsai_mvp.png to root"
+
+# Copy icon to icons dir as well
+mkdir -p "$APPDIR/usr/share/icons"
+cp "docs/img/bonsai_mvp.png" "$APPDIR/usr/share/icons/bonsai.png"
+echo "Icon copied to icons dir"
+
+# Copy root desktop if exists in template (fallback)
+if [ ! -f "$APPDIR/Bonsai.desktop" ] && [ -f "$TEMPLATE_DIR/Bonsai.desktop" ]; then
+  cp "$TEMPLATE_DIR/Bonsai.desktop" "$APPDIR/Bonsai.desktop"
+  sed -i 's|Exec=.*|Exec=Bonsai.UI|' "$APPDIR/Bonsai.desktop"
+fi
+
+# The desktop file is now created with correct Exec, no need for sed
+
+# Ensure AppRun is executable
+chmod +x "$APPDIR/AppRun" 2>/dev/null || true
+
+# Ensure icon exists (should be copied from template)
+if [ ! -f "$APPDIR/usr/share/icons/bonsai.png" ]; then
   mkdir -p "$APPDIR/usr/share/icons"
-  cp "installer/BonsaiIcon.ico" "$APPDIR/usr/share/icons/$APP_NAME.png" 2>/dev/null || true
+  cp "$TEMPLATE_DIR/usr/share/icons/bonsai.png" "$APPDIR/usr/share/icons/bonsai.png" 2>/dev/null || true
 fi
 
 # Ensure AppRun exists (fallback to AppRun from AppImageKit if present)
@@ -51,6 +87,15 @@ if [ ! -f "$APPDIR/AppRun" ]; then
     chmod +x "$APPDIR/AppRun"
   fi
 fi
+
+echo "Debug: About to build AppImage. Listing AppDir contents"
+ls -la "$APPDIR"
+echo "Debug: Listing applications dir"
+ls -la "$APPDIR/usr/share/applications/" || echo "Applications dir not found"
+echo "Debug: Listing icons dir"
+ls -la "$APPDIR/usr/share/icons/" || echo "Icons dir not found"
+echo "Debug: Desktop file content:"
+cat "$APPDIR/usr/share/applications/Bonsai.desktop" || echo "Desktop file not found"
 
 # Build AppImage if appimagetool present or can be downloaded
 if command -v appimagetool >/dev/null 2>&1; then

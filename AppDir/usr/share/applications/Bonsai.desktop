@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Bonsai
-Comment=Bonsai Application
-Exec=Bonsai %U
-Icon=bonsai
-Terminal=false
-Type=Application
-Categories=Development;

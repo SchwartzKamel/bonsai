@@ -50,8 +50,11 @@ else
   if command -v zip >/dev/null 2>&1; then
     zip -r "$OUT_DIR/$APP_NAME-osx-x64.zip" "$APP_BUNDLE"
     echo "Zip created at $OUT_DIR/$APP_NAME-osx-x64.zip"
+  elif command -v tar >/dev/null 2>&1; then
+    tar -czf "$OUT_DIR/$APP_NAME-osx-x64.tar.gz" -C "$(pwd)" "$APP_BUNDLE"
+    echo "Tarball created at $OUT_DIR/$APP_NAME-osx-x64.tar.gz"
   else
-    echo "ERROR: neither hdiutil nor zip found. Cannot produce macOS distribution on this host.";
+    echo "ERROR: neither hdiutil, zip, nor tar found. Cannot produce macOS distribution on this host.";
     exit 1
   fi
 fi
