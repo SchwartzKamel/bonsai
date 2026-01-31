@@ -6,9 +6,18 @@ OUT_DIR=${2:-artifacts}
 APP_NAME="Bonsai"
 APP_BUNDLE="$APP_NAME.app"
 
+require_cmd() {
+  command -v "$1" >/dev/null 2>&1 || { echo "ERROR: required command '$1' not found. Install it and retry."; exit 1; }
+}
+
 if [ -z "$PUBLISH_DIR" ]; then
   echo "Usage: $0 <publish_dir> [out_dir]"
   exit 2
+fi
+
+if [ ! -d "$PUBLISH_DIR" ]; then
+  echo "ERROR: publish dir '$PUBLISH_DIR' does not exist. Run: make publish-mac or make publish-all";
+  exit 1
 fi
 
 mkdir -p "$OUT_DIR"
@@ -38,6 +47,11 @@ if command -v hdiutil >/dev/null 2>&1; then
   echo "DMG created at $DMG_OUT"
 else
   echo "hdiutil not found. Creating a zip fallback."
-  zip -r "$OUT_DIR/$APP_NAME-osx-x64.zip" "$APP_BUNDLE"
-  echo "Zip created at $OUT_DIR/$APP_NAME-osx-x64.zip"
+  if command -v zip >/dev/null 2>&1; then
+    zip -r "$OUT_DIR/$APP_NAME-osx-x64.zip" "$APP_BUNDLE"
+    echo "Zip created at $OUT_DIR/$APP_NAME-osx-x64.zip"
+  else
+    echo "ERROR: neither hdiutil nor zip found. Cannot produce macOS distribution on this host.";
+    exit 1
+  fi
 fi

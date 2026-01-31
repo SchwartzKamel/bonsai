@@ -13,6 +13,11 @@ Prerequisites:
 - .NET 10 SDK (verify with `dotnet --list-sdks | grep '^10\.'`)
 - `make` and `bash`
 - PowerShell (`pwsh`) if you plan to build the MSI locally
+- Packaging tools (recommended):
+  - On Linux: `appimagetool` or `appimage-builder` (AppImage creation). `wget` or `curl` are useful to download `appimagetool` if it is not present on the host.
+  - On macOS: `hdiutil` (included on macOS) for DMG creation
+  - On Windows: WiX Toolset (`candle`/`light`) for MSI creation (optional; the scripts will fallback to copying binaries when WiX isn't present)
+- Verify packaging prerequisites locally with: `make check-packaging-deps` (prints helpful guidance and best-effort checks)
 
 Common commands (from repo root):
 

@@ -65,6 +65,16 @@ jobs:
           dotnet publish src/Bonsai.UI -c Release -f net10.0 -r ${{ matrix.rid }} --self-contained true \
             -p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -o ./publish/${{ matrix.rid }}
 
+      - name: Check packaging dependencies
+        run: make check-packaging-deps
+
+      - name: Print packaging tool versions (best effort)
+        run: |
+          echo "dotnet:" && dotnet --info
+          echo "pwsh:" && (pwsh --version 2>/dev/null || true)
+          echo "appimagetool:" && (appimagetool --version 2>/dev/null || true)
+          echo "hdiutil:" && (hdiutil --version 2>/dev/null || true)
+
       - name: Package (platform-specific)
         run: |
           if [ "${{ matrix.pack }}" = "linux" ]; then
