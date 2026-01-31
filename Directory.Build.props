@@ -7,7 +7,7 @@
     <TrimMode>link</TrimMode>
     <PublishSingleFile>true</PublishSingleFile>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <Version>0.2.01</Version>
+    <Version>0.2.02</Version>
     <!-- Avalonia specific for Desktop -->
     <UseAvaloniaXamlIl Condition="'$(TargetFramework)' == 'net8.0'" >true</UseAvaloniaXamlIl>
     <AvaloniaXamlIlEnableCompiledBindings Condition="'$(TargetFramework)' == 'net8.0'" >true</AvaloniaXamlIlEnableCompiledBindings>
