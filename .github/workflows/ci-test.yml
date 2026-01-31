@@ -71,7 +71,7 @@ jobs:
           for trx in ./test-results/*.trx; do
             if [ -f "$trx" ]; then
               base=$(basename "$trx" .trx)
-              trx2junit -o "./test-results/junit/${base}.xml" "$trx"
+              trx2junit --output "./test-results/junit" "$trx"
             fi
           done
         shell: bash
@@ -85,9 +85,8 @@ jobs:
           Add-Content -Path $env:GITHUB_PATH -Value $envPath
           New-Item -Path .\test-results\junit -ItemType Directory -Force
           Get-ChildItem .\test-results\*.trx -ErrorAction SilentlyContinue | ForEach-Object {
-            $baseName = $_.BaseName
-            $outputPath = ".\test-results\junit\$baseName.xml"
-            & trx2junit -o $outputPath $_.FullName
+            $outputDir = ".\test-results\junit"
+            & trx2junit --output $outputDir $_.FullName
           }
 
       - name: Publish test results
