@@ -69,7 +69,8 @@ jobs:
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
           mkdir -p ./test-results/junit
           for trx in ./test-results/*.trx; do
-            trx2junit "$trx" --output "./test-results/junit"
+            base=$(basename "$trx" .trx)
+            trx2junit "$trx" -o "./test-results/junit/${base}.xml"
           done
         shell: bash
 
@@ -82,7 +83,9 @@ jobs:
           Add-Content -Path $env:GITHUB_PATH -Value $envPath
           New-Item -Path .\test-results\junit -ItemType Directory -Force
           Get-ChildItem .\test-results\*.trx | ForEach-Object {
-            & trx2junit $_.FullName --output .\test-results\junit
+            $baseName = $_.BaseName
+            $outputPath = ".\test-results\junit\$baseName.xml"
+            & trx2junit $_.FullName -o $outputPath
           }
 
       - name: Publish test results
