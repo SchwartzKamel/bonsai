@@ -38,15 +38,15 @@ check-packaging-deps: check-sdk
 
 publish-linux: check-packaging-deps
 	$(DOTNET) publish src/Bonsai.UI -c $(CONFIG) -f $(TF) -r linux-x64 --self-contained true \
-		-p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -o ./publish/linux-x64
+		-p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/linux-x64
 
 publish-win: check-sdk
 	$(DOTNET) publish src/Bonsai.UI -c $(CONFIG) -f $(TF) -r win-x64 --self-contained true \
-		-p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -o ./publish/win-x64
+		-p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/win-x64
 
 publish-mac: check-sdk
 	$(DOTNET) publish src/Bonsai.UI -c $(CONFIG) -f $(TF) -r osx-x64 --self-contained true \
-		-p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -o ./publish/osx-x64
+		-p:PublishSingleFile=true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/osx-x64
 
 publish-all: publish-linux publish-win publish-mac
 
