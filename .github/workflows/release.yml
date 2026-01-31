@@ -50,7 +50,7 @@ jobs:
         shell: pwsh
         run: |
           $version = "4.0.4"
-          $url = "https://github.com/wixtoolset/wix/releases/download/wix-$version/wix-$version-x64.msi"
+          $url = "https://github.com/wixtoolset/wix/releases/download/wix-v$version/wix-v$version-x64.msi"
           Invoke-WebRequest -Uri $url -OutFile "wix.msi"
           Start-Process msiexec.exe -ArgumentList "/i wix.msi /quiet /norestart ADDLOCAL=Tools" -Wait
           Remove-Item "wix.msi" -Force
