@@ -110,5 +110,12 @@ jobs:
             artifacts/**
             publish/${{ matrix.rid }}
 
-      - name: Cleanup temporary files
+      - name: Cleanup temporary files (non-Windows)
+        if: runner.os != 'Windows'
         run: rm -rf AppDir
+        shell: bash
+
+      - name: Cleanup temporary files (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Remove-Item -Recurse -Force AppDir -ErrorAction SilentlyContinue
