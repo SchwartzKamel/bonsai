@@ -6,12 +6,14 @@ last_updated = \"2026-01-31\"
 tags = [\"ci-cd\", \"multi-platform\", \".net8\", \"avalonia\", \"blazor\", \"maui\"]
 +++
 
-# GitHub Workflows for Multi-Platform Bonsai App
+GitHub Workflows for Multi-Platform Bonsai App
 
 ## Overview
+
 This document details proposed changes to GitHub workflows to support Desktop (Avalonia), Web (Blazor WASM), and Android (MAUI) builds on .NET 8.0. Changes include .NET version updates, multi-TFM/RID matrices, and platform-specific jobs.
 
 ## Common Changes Across Workflows
+
 - Replace `dotnet-version: '10.x'` with `'8.x'`.
 - Add matrix for `platform: [desktop, web, android]` where applicable.
 - Use `--framework net8.0` in dotnet commands.
@@ -19,9 +21,11 @@ This document details proposed changes to GitHub workflows to support Desktop (A
 - Cache: Include platform-specific keys.
 
 ## 1. ci-test.yml Updates
+
 **Purpose:** Test all platforms across OS/TFM.
 
 **Proposed Full Rewrite (Key Sections):**
+
 ```yaml
 name: CI Test
 on:
@@ -140,9 +144,11 @@ jobs:
 ```
 
 ## 2. publish-self-contained.yml Updates
+
 **Purpose:** Publish self-contained binaries for all platforms.
 
 **Proposed Key Changes (Matrix Extension):**
+
 - Matrix include:
   - Desktop Linux: ubuntu-latest, linux-x64, desktop
   - Desktop macOS x64: macos-latest, osx-x64, desktop
@@ -151,6 +157,7 @@ jobs:
   - Web: ubuntu-latest, browser-wasm, web
   - Android: windows-latest, android-arm64, android
 - Publish step:
+
   ```yaml
   - name: Publish ${{ matrix.platform }}
     run: |
@@ -162,25 +169,31 @@ jobs:
         dotnet publish src/Bonsai.Mobile -c Release -f net8.0-android -r ${{ matrix.rid }} --self-contained true -o ./publish/${{ matrix.rid }}
       fi
   ```
+
 - Packaging: Conditional based on platform (AppImage for desktop Linux, DMG for macOS, MSI for Windows, AAB/APK for Android, static files for Web).
 
 ## 3. build-msi.yml Updates
+
 **Purpose:** Windows MSI for Desktop only.
 
 **Proposed Changes:**
+
 - Update to `dotnet-version: '8.x'`
 - Publish: `-f net8.0`
 - Keep WiX install and script call.
 
 ## 4. release.yml Updates
+
 **Purpose:** Create release with all platform artifacts.
 
 **Proposed Key Changes:**
+
 - Matrix for platforms as in publish-self-contained.
 - Download artifacts per platform.
 - Use softprops/action-gh-release to attach all (e.g., MSI, AppImage, DMG, APK, web-dist.zip).
 
 ## Implementation Notes
+
 - Create new projects: Bonsai.Web (Blazor), Bonsai.Mobile (MAUI) in Code mode.
 - Add tests per platform.
 - global.json: Pin to .NET 8.0.100.
