@@ -2,7 +2,7 @@
 
 New git-flow script added for conventional commits.
 
-[![Publish Self-Contained](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-self-contained.yml/badge.svg)](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-self-contained.yml) [![Build MSI](https://github.com/SchwartzKamel/bonsai/actions/workflows/build-msi.yml/badge.svg)](https://github.com/SchwartzKamel/bonsai/actions/workflows/build-msi.yml)
+[![Linux](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-linux.yml/badge.svg)](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-linux.yml) [![macOS](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-macos.yml/badge.svg)](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-macos.yml) [![Windows](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-windows.yml/badge.svg)](https://github.com/SchwartzKamel/bonsai/actions/workflows/publish-windows.yml) [![Build MSI](https://github.com/SchwartzKamel/bonsai/actions/workflows/build-msi.yml/badge.svg)](https://github.com/SchwartzKamel/bonsai/actions/workflows/build-msi.yml)
 
 Bonsai is a minimal Avalonia UI template targeting .NET 10 (net10.0). This repository contains a small modular project layout (Core, Services, UI, Tests) and CI-ready defaults for producing self-contained desktop artifacts.
 
