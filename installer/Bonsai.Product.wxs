@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="Bonsai" Manufacturer="YourCompany" Language="1033" Version="1.0.1.0" UpgradeCode="PUT-GUID-HERE">
+  <Product Id="*" Name="Bonsai" Manufacturer="YourCompany" Language="1033" Version="1.0.1.0" UpgradeCode="c9c5bb16-738f-4a15-848b-4a9eeb1ccb26">
     <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
 
     <MediaTemplate />
@@ -8,7 +8,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="Bonsai">
-          <Component Id="cmpBonsaiExe" Guid="PUT-GUID-HERE">
+          <Component Id="cmpBonsaiExe" Guid="b59b211d-d2fb-4c5f-80d8-62752d14bddd">
             <File Id="BonsaiExe" Source="$(var.BinariesDir)\Bonsai.UI.exe" KeyPath="yes" />
             <Shortcut Id="ApplicationShortcut"
                       Name="Bonsai"
@@ -16,7 +16,7 @@
                       WorkingDirectory="INSTALLFOLDER"
                       Icon="BonsaiIcon.ico" />
           </Component>
-          <Component Id="cmpIcon" Guid="PUT-GUID-HERE">
+          <Component Id="cmpIcon" Guid="e9305ef4-4fa4-4d6f-ad31-326b4a3f1149">
             <File Id="IconFile" Source="$(var.BinariesDir)\BonsaiIcon.ico" KeyPath="no" />
           </Component>
         </Directory>
