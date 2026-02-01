@@ -55,7 +55,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          choco install wixtoolset --yes --force
+          choco install wixtoolset.v4 --pre --yes --force
           echo "C:\Program Files (x86)\WiX Toolset v4\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Restore & Build
