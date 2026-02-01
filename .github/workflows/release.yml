@@ -48,9 +48,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $wixVersion = "4.0.4"
-          $wixUrl = "https://github.com/wixtoolset/wix/releases/download/v${wixVersion}/wix-v${wixVersion}-x86.msi"
-          $wixMsiPath = "wix-v${wixVersion}-x86.msi"
+          $wixUrl = "https://github.com/wixtoolset/wix/releases/download/wix-v4.0.4/wix-v4.0.4-x86.msi"
+          $wixMsiPath = "wix-v4.0.4-x86.msi"
           Invoke-WebRequest -Uri $wixUrl -OutFile $wixMsiPath
           Start-Process msiexec.exe -ArgumentList "/i $wixMsiPath /quiet /norestart" -Wait -NoNewWindow
           $wixBinPath = "C:\Program Files (x86)\WiX Toolset v4\bin"
@@ -70,7 +69,6 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
-
 
       - name: Package (Linux AppImage)
         if: runner.os == 'Linux'
@@ -97,7 +95,6 @@ jobs:
         with:
           name: ${{ matrix.asset_name }}
           path: artifacts/**
-
 
   create-release:
     needs: build-release
