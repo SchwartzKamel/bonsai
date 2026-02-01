@@ -43,4 +43,9 @@
   <ItemGroup>
     <None Include="TrimmerDescriptor.xml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="BonsaiIcon.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Always" />
+  </ItemGroup>
+
 </Project>
