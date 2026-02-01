@@ -48,7 +48,7 @@ try {
 
 # If wix light is available, produce the msi
 if (Get-Command light -ErrorAction SilentlyContinue) {
-  $msiOut = Join-Path -Path $OutputDir -ChildPath "Bonsai-1.0.0.msi"
+  $msiOut = Join-Path -Path $OutputDir -ChildPath "Bonsai-1.0.1.msi"
   New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
   $lightCmd = "light -ext WixUIExtension -o `"$msiOut`" `"$wixobj`""
   Write-Host "Running: $lightCmd"
