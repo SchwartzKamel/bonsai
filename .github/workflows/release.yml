@@ -72,6 +72,19 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/${{ matrix.rid }}
+      
+      - name: Verify publish output (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $publishDir = "./publish/${{ matrix.rid }}"
+          if (Test-Path $publishDir) {
+            Write-Host "Publish directory exists:"
+            Get-ChildItem $publishDir | ForEach-Object { Write-Host $_.Name }
+          } else {
+            Write-Error "Publish directory $publishDir not found!"
+            exit 1
+          }
 
       - name: Package (Linux AppImage)
         if: runner.os == 'Linux'

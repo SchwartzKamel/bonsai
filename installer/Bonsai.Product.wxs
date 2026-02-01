@@ -16,18 +16,18 @@
                       WorkingDirectory="INSTALLFOLDER"
                       Icon="BonsaiIcon.ico" />
           </Component>
-          <Component Id="cmpIcon" Guid="PUT-GUID-HERE">
+          <!-- <Component Id="cmpIcon" Guid="PUT-GUID-HERE">
             <File Id="IconFile" Source="$(var.BinariesDir)\BonsaiIcon.ico" KeyPath="no" />
-          </Component>
+          </Component> -->
         </Directory>
       </Directory>
     </Directory>
 
     <Feature Id="ProductFeature" Title="Bonsai" Level="1">
       <ComponentRef Id="cmpBonsaiExe" />
-      <ComponentRef Id="cmpIcon" />
+      <!-- <ComponentRef Id="cmpIcon" /> -->
     </Feature>
 
-    <Icon Id="BonsaiIcon.ico" SourceFile="$(var.BinariesDir)\BonsaiIcon.ico" />
+    <!-- <Icon Id="BonsaiIcon.ico" SourceFile="$(var.BinariesDir)\BonsaiIcon.ico" /> -->
   </Product>
 </Wix>

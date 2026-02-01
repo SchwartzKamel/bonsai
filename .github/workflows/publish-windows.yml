@@ -47,6 +47,17 @@ jobs:
       - name: Publish self-contained (Windows)
         shell: pwsh
         run: dotnet publish src/Bonsai.UI -c Release -f net8.0 -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -p:PublishReadyToRun=true -p:DebugType=None -o ./publish/win-x64
+      
+      - name: Verify publish output
+        shell: pwsh
+        run: |
+          if (Test-Path ./publish/win-x64) {
+            Write-Host "Publish directory exists:"
+            Get-ChildItem ./publish/win-x64 | ForEach-Object { Write-Host $_.Name }
+          } else {
+            Write-Error "Publish directory ./publish/win-x64 not found!"
+            exit 1
+          }
 
       - name: Check packaging dependencies
         run: make check-packaging-deps
