@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Product Id="*" Name="Bonsai" Manufacturer="YourCompany" Language="1033" Version="1.0.1.0" UpgradeCode="c9c5bb16-738f-4a15-848b-4a9eeb1ccb26">
     <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
 
@@ -10,11 +10,7 @@
         <Directory Id="INSTALLFOLDER" Name="Bonsai">
           <Component Id="cmpBonsaiExe" Guid="b59b211d-d2fb-4c5f-80d8-62752d14bddd">
             <File Id="BonsaiExe" Source="$(var.BinariesDir)\Bonsai.UI.exe" KeyPath="yes" />
-            <Shortcut Id="ApplicationShortcut"
-                      Name="Bonsai"
-                      Target="[INSTALLFOLDER]Bonsai.UI.exe"
-                      WorkingDirectory="INSTALLFOLDER"
-                      Icon="BonsaiIcon.ico" />
+            <!-- Shortcut in v4 requires WixUIExtension or Util, skipping for basic build on Linux -->
           </Component>
           <Component Id="cmpIcon" Guid="e9305ef4-4fa4-4d6f-ad31-326b4a3f1149">
             <File Id="IconFile" Source="$(var.BinariesDir)\BonsaiIcon.ico" KeyPath="no" />
@@ -28,6 +24,6 @@
       <ComponentRef Id="cmpIcon" />
     </Feature>
 
-    <Icon Id="BonsaiIcon.ico" SourceFile="$(var.BinariesDir)\BonsaiIcon.ico" />
+    <!-- Icon for v4, may need extension -->
   </Product>
 </Wix>

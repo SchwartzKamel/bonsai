@@ -38,24 +38,15 @@ $wxs = Join-Path -Path "installer" -ChildPath "Bonsai.Product.wxs"
 $wixobj = [System.IO.Path]::ChangeExtension($wxs, '.wixobj')
 
 # Use normalized BinariesDir for candle/light
-$candleCmd = "candle -dBinariesDir=`"$BinariesDir`" `"$wxs`""
-Write-Host "Running: $candleCmd"
+# Use wix build for WiX v4 (basic, without UI extension on Linux)
+$msiOut = Join-Path -Path $OutputDir -ChildPath "Bonsai-1.0.1.msi"
+New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
+$wixBuildCmd = "wix build `"$wxs`" -o `"$msiOut`" -d BinariesDir=`"$BinariesDir`""
+Write-Host "Running: $wixBuildCmd"
 try {
-  iex $candleCmd
+  iex $wixBuildCmd
+  Write-Host "Basic MSI created at $msiOut (no UI extension on Linux)"
 } catch {
-  Write-Warning "candle failed (maybe WiX not installed). Skipping actual MSI compilation in stub."
-}
-
-# If wix light is available, produce the msi
-if (Get-Command light -ErrorAction SilentlyContinue) {
-  $msiOut = Join-Path -Path $OutputDir -ChildPath "Bonsai-1.0.1.msi"
-  New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
-  $lightCmd = "light -ext WixUIExtension -o `"$msiOut`" `"$wixobj`""
-  Write-Host "Running: $lightCmd"
-  iex $lightCmd
-  Write-Host "MSI created at $msiOut"
-} else {
-  Write-Warning "light.exe not found. Generate MSI locally on a machine with WiX installed. As a fallback, copying exe to artifacts."
-  New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
-  Copy-Item -Path (Join-Path $BinariesDir '*') -Destination $OutputDir -Recurse -Force
+  Write-Warning "wix build failed. As a fallback, copying exe to artifacts."
+  Copy-Item -Path (Join-Path $BinariesDir 'Bonsai.UI.exe') -Destination $OutputDir -Force
 }
