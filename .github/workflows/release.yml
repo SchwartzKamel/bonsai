@@ -48,8 +48,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          $wixUrl = "https://github.com/wixtoolset/wix/releases/download/wix-v4.0.4/wix-v4.0.4-x86.msi"
-          $wixMsiPath = "wix-v4.0.4-x86.msi"
+          $wixUrl = "https://github.com/wixtoolset/wix/releases/download/v4.0.4/wix40-x86-en.msi"
+          $wixMsiPath = "wix40-x86-en.msi"
           Invoke-WebRequest -Uri $wixUrl -OutFile $wixMsiPath
           Start-Process msiexec.exe -ArgumentList "/i $wixMsiPath /quiet /norestart" -Wait -NoNewWindow
           $wixBinPath = "C:\Program Files (x86)\WiX Toolset v4\bin"
