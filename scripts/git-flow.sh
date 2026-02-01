@@ -6,11 +6,11 @@
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+PROJECT_ROOT=$(git rev-parse --show-toplevel)
 
 # Ensure gh is installed and authenticated
-if ! command -v gh && ! gh auth status >/dev/null 2>&1; then
+if ! command -v gh || ! gh auth status >/dev/null 2>&1; then
   echo "Error: GitHub CLI (gh) is required and must be authenticated."
   exit 1
 fi
